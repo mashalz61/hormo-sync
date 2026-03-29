@@ -19,7 +19,7 @@ const tabIcon =
           borderRadius: 12,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: focused ? "#EAF3FF" : "transparent",
+          backgroundColor: focused ? "#FCEFF4" : "transparent",
         }}
       >
         <Ionicons color={color} name={focused ? activeName : inactiveName} size={size} />
@@ -34,7 +34,7 @@ const homeLogoIcon = ({ focused }: { focused: boolean }) => (
       borderRadius: 14,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: focused ? theme.colors.primary : "#EEF5FF",
+      backgroundColor: focused ? theme.colors.primary : "#F9EDF2",
     }}
   >
     <Text
@@ -96,10 +96,10 @@ export default function TabsLayout() {
           backgroundColor: "rgba(255,255,255,0.96)",
           borderTopColor: "transparent",
           borderWidth: 1,
-          borderColor: "rgba(208,224,238,0.9)",
+          borderColor: "rgba(232,205,219,0.95)",
           paddingTop: 6,
           paddingBottom: 8,
-          shadowColor: "#16324F",
+          shadowColor: "#5A3A48",
           shadowOpacity: 0.1,
           shadowRadius: 12,
           shadowOffset: { width: 0, height: 6 },

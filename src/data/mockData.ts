@@ -59,7 +59,7 @@ export const services: Service[] = [
     description: "Multi-step assessment with supportive risk insights.",
     icon: "pulse-outline",
     accent: "#FCE7E9",
-    gradientColors: ["#2B7FFF", "#3AB7B1"],
+    gradientColors: ["#C95B88", "#E3A5BE"],
     route: "/assessments/basic-health",
   },
   {
@@ -68,7 +68,7 @@ export const services: Service[] = [
     description: "Calculate BMI and understand the weight category.",
     icon: "resize-outline",
     accent: "#FBECDD",
-    gradientColors: ["#24A89A", "#6FD4C6"],
+    gradientColors: ["#BF567F", "#DD98B4"],
     route: "/assessments/bmi-calculation",
   },
   {
@@ -77,7 +77,7 @@ export const services: Service[] = [
     description: "Log your cycle and view summaries over time.",
     icon: "calendar-outline",
     accent: "#F8E7EF",
-    gradientColors: ["#7A8BFF", "#AEB8FF"],
+    gradientColors: ["#B95B88", "#D9A2BB"],
     route: "/tracker/menstrual-cycle-tracker",
   },
   {
@@ -86,7 +86,7 @@ export const services: Service[] = [
     description: "Review symptoms and spot recurring wellness signals.",
     icon: "medkit-outline",
     accent: "#EDF1FA",
-    gradientColors: ["#4D97FF", "#74B5FF"],
+    gradientColors: ["#C86791", "#E6A9C3"],
     route: "/assessments/symptom-checker",
   },
   {
@@ -95,7 +95,7 @@ export const services: Service[] = [
     description: "See which signs may justify follow-up lab testing.",
     icon: "flask-outline",
     accent: "#F9EBDC",
-    gradientColors: ["#17A39A", "#65D0C3"],
+    gradientColors: ["#B35680", "#D59AB4"],
     route: "/assessments/hormonal-analysis",
   },
   {
@@ -104,7 +104,7 @@ export const services: Service[] = [
     description: "Track meals and receive simple nutrition guidance.",
     icon: "nutrition-outline",
     accent: "#E9F2E8",
-    gradientColors: ["#4FAF75", "#9AD07B"],
+    gradientColors: ["#C25E88", "#E0A0BB"],
     route: "/tracker/meal-time-selection",
   },
   {
@@ -113,7 +113,7 @@ export const services: Service[] = [
     description: "Set habits for hydration, sleep, movement, and calm.",
     icon: "notifications-outline",
     accent: "#EEE8F5",
-    gradientColors: ["#5E74F8", "#8FA3FF"],
+    gradientColors: ["#BC5B84", "#DA9AB6"],
     route: "/reminders/reminder-list",
   },
   {
@@ -122,7 +122,7 @@ export const services: Service[] = [
     description: "Match seed cycling routines to your current phase.",
     icon: "leaf-outline",
     accent: "#EDF0DA",
-    gradientColors: ["#6C9841", "#A3C768"],
+    gradientColors: ["#B15A7F", "#CF98B1"],
     route: "/seed/seed-cycle-tracker",
   },
 ];

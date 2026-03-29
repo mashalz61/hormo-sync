@@ -46,14 +46,14 @@ export const DashboardCard = ({ service, onPress }: DashboardCardProps) => {
     >
       <View className="h-[194px] rounded-[18px] border border-healthcare-border bg-white p-4">
         <View className="mb-3 flex-row items-start justify-between">
-          <View className="h-10 w-10 items-center justify-center rounded-xl bg-[#EEF5FF]">
+          <View className="h-10 w-10 items-center justify-center rounded-xl bg-[#F9EDF2]">
             <Ionicons
-              color="#2B7FFF"
+              color="#CC5C89"
               name={service.icon as keyof typeof Ionicons.glyphMap}
               size={18}
             />
           </View>
-          <View className="rounded-full bg-[#F4F8FC] px-2 py-1">
+          <View className="rounded-full bg-[#FDEFF5] px-2 py-1">
             <Text className="text-[10px] font-semibold tracking-[0.3px] text-healthcare-muted">
               {category}
             </Text>
@@ -73,9 +73,9 @@ export const DashboardCard = ({ service, onPress }: DashboardCardProps) => {
           {service.description}
         </Text>
 
-        <View className="mt-auto flex-row items-center justify-between border-t border-[#E7EEF5] pt-2.5">
+        <View className="mt-auto flex-row items-center justify-between border-t border-[#F3DBE7] pt-2.5">
           <Text className="text-[12px] font-semibold text-healthcare-primary">Open tool</Text>
-          <Ionicons color="#2B7FFF" name="chevron-forward" size={16} />
+          <Ionicons color="#CC5C89" name="chevron-forward" size={16} />
         </View>
       </View>
     </AnimatedPressable>
@@ -96,7 +96,7 @@ const getServiceCategory = (title: string): string => {
 const styles = StyleSheet.create({
   cardWrap: {
     borderRadius: 18,
-    shadowColor: "#16324F",
+    shadowColor: "#5A3A48",
     shadowOpacity: Platform.OS === "ios" ? 0.08 : 0,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
