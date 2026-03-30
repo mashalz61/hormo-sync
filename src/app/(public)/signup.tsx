@@ -1,11 +1,10 @@
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 
+import { AuthShell } from "@/components/AuthShell";
 import { CustomButton } from "@/components/CustomButton";
 import { InputField } from "@/components/InputField";
-import { Screen } from "@/components/Screen";
-import { SectionTitle } from "@/components/SectionTitle";
 import { useAppStore } from "@/store/appStore";
 import { theme } from "@/theme";
 
@@ -21,50 +20,46 @@ export default function SignUpScreen() {
       return;
     }
 
-    // TODO: Replace mock sign-up with API mutation and secure auth flow.
     login(email);
     router.replace("/home");
   };
 
   return (
-    <Screen contentStyle={styles.container}>
-      <SectionTitle
-        title="Create your account"
-        subtitle="Start with a secure space for supportive cycle and health tracking."
+    <AuthShell
+      eyebrow="Create account"
+      title="Create your account"
+      subtitle="Get started in a few quick steps."
+      footer={
+        <Link href="/login" style={styles.footerLink}>
+          Already have an account? Log in
+        </Link>
+      }
+    >
+      <InputField
+        label="Full name"
+        value={name}
+        onChangeText={setName}
       />
-      <View style={styles.form}>
-        <InputField label="Full name" value={name} onChangeText={setName} />
-        <InputField
-          autoCapitalize="none"
-          keyboardType="email-address"
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <InputField
-          helperText="Use at least 8 characters for production."
-          label="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
+      <InputField
+        autoCapitalize="none"
+        keyboardType="email-address"
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <InputField
+        helperText="Use at least 8 characters for a production-ready password."
+        label="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
       <CustomButton label="Create Account" onPress={handleSignup} />
-      <Link href="/login" style={styles.footerLink}>
-        Already have an account? Log in
-      </Link>
-    </Screen>
+    </AuthShell>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    gap: theme.spacing.xl,
-    paddingTop: theme.spacing.xxxl,
-  },
-  form: {
-    gap: theme.spacing.lg,
-  },
   footerLink: {
     ...theme.typography.body,
     color: theme.colors.textMuted,

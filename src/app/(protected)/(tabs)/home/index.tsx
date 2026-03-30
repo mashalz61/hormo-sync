@@ -47,18 +47,37 @@ export default function HomeScreen() {
   const greeting = useGreeting();
   const reminders = useAppStore((state) => state.reminders);
   const riskTone = riskToneByLevel[homeSnapshot.riskSummary.risk];
+  const habitCompletion = Math.round(
+    (homeSnapshot.completedHabits / homeSnapshot.totalHabits) * 100,
+  );
+  const todayLabel = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  }).format(new Date());
 
   return (
     <Screen contentStyle={{ paddingHorizontal: 16, gap: 24 }}>
       <LinearGradient
-        colors={["#FFF1F6", "#FFF5F8", "#FFFAFC"]}
+        colors={["#F7DDE9", "#FBEAF2", "#FFF6FA"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={{ borderRadius: 28, padding: 2.5 }}
+        style={{ borderRadius: 28, padding: 2 }}
       >
-        <View className="overflow-hidden rounded-[26px] border border-white/75 bg-white/62 px-5 pb-6 pt-4">
-          <View className="absolute -right-12 -top-10 h-44 w-44 rounded-full bg-[#FADAE7]/80" />
-          <View className="absolute -bottom-16 -left-8 h-40 w-40 rounded-full bg-[#FBE6EF]/70" />
+        <View className="overflow-hidden rounded-[26px] border border-[#EFD3DF] bg-[#FFF8FB] px-5 pb-6 pt-4">
+          <View className="absolute -right-12 -top-10 h-44 w-44 rounded-full bg-[#F6D5E3]/85" />
+          <View className="absolute -bottom-16 -left-8 h-40 w-40 rounded-full bg-[#F9E0EB]/80" />
+
+          <View className="mb-3 flex-row items-center justify-between">
+            <View className="rounded-full border border-[#EED8E3] bg-white px-3 py-1">
+              <Text className="text-[11px] font-semibold text-healthcare-muted">{todayLabel}</Text>
+            </View>
+            <View className="rounded-full border border-[#EED8E3] bg-white px-3 py-1">
+              <Text className="text-[11px] font-semibold text-healthcare-primary">
+                {mockUser.cyclePhase} phase
+              </Text>
+            </View>
+          </View>
 
           <View className="flex-row items-start justify-between gap-3">
             <View className="flex-1">
@@ -71,11 +90,11 @@ export default function HomeScreen() {
                 {mockUser.firstName}
               </Text>
               <Text className="mt-2 text-[14px] leading-6 text-healthcare-muted">
-                Today is a good day for steady habits. You&apos;re in the {mockUser.cyclePhase} phase.
+                Your wellness summary is ready. Focus on steady meals, hydration, and movement.
               </Text>
             </View>
 
-            <View className="rounded-2xl border border-white/80 bg-white/85 px-3 py-2.5">
+            <View className="rounded-2xl border border-[#F0D7E3] bg-white px-3 py-2.5">
               <View className="flex-row items-center gap-1.5">
                 <Ionicons color="#CC5C89" name="sparkles-outline" size={14} />
                 <Text className="text-[11px] font-semibold text-healthcare-primary">Daily Focus</Text>
@@ -92,13 +111,18 @@ export default function HomeScreen() {
             ))}
           </View>
 
-          <View className="mt-5 rounded-2xl border border-white/70 bg-white/82 px-3.5 py-3">
+          <View className="mt-5 rounded-2xl border border-[#EED4E1] bg-white px-3.5 py-3.5">
             <View className="flex-row items-center justify-between">
               <Text className="text-[13px] font-medium text-healthcare-muted">Today&apos;s rhythm</Text>
-              <Text className="text-[12px] font-semibold text-healthcare-primary">Updated now</Text>
+              <Text className="text-[12px] font-semibold text-healthcare-primary">
+                {habitCompletion}% complete
+              </Text>
             </View>
             <View className="mt-2 h-2 overflow-hidden rounded-full bg-[#F3DFE8]">
-              <View className="h-full w-[70%] rounded-full bg-healthcare-primary" />
+              <View
+                className="h-full rounded-full bg-healthcare-primary"
+                style={{ width: `${habitCompletion}%` }}
+              />
             </View>
             <Text className="mt-2 text-[13px] leading-5 text-healthcare-muted">
               You&apos;ve completed {homeSnapshot.completedHabits} of {homeSnapshot.totalHabits} daily
@@ -108,7 +132,7 @@ export default function HomeScreen() {
         </View>
       </LinearGradient>
 
-      <View className="rounded-[20px] border border-healthcare-border bg-white/92 p-5">
+      <View className="rounded-[20px] border border-[#ECD1DE] bg-white p-5">
         <View className="flex-row items-center justify-between">
           <Text className="text-[16px] font-semibold text-healthcare-text">Continue Progress</Text>
           <View className="rounded-full px-3 py-1" style={{ backgroundColor: riskTone.bgColor }}>
@@ -143,7 +167,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View className="rounded-[20px] border border-healthcare-border bg-white/92 p-4">
+      <View className="rounded-[20px] border border-[#ECD1DE] bg-white p-4">
         <View className="flex-row items-center justify-between">
           <Text className="text-[16px] font-semibold text-healthcare-text">Today&apos;s Reminders</Text>
           <Pressable
@@ -187,7 +211,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View className="rounded-[20px] border border-healthcare-border bg-white/92 p-4">
+      <View className="rounded-[20px] border border-[#ECD1DE] bg-white p-4">
         <View className="mb-3">
           <Text className="text-[18px] font-semibold text-healthcare-text">Health Services</Text>
           <Text className="mt-1 text-[14px] leading-5 text-healthcare-muted">
@@ -231,12 +255,12 @@ interface QuickStatProps {
 }
 
 const QuickStat = ({ label, value, icon }: QuickStatProps) => (
-  <View className="min-w-[46%] flex-1 rounded-[16px] border border-white/80 bg-white/78 p-3">
+  <View className="min-w-[46%] flex-1 rounded-[16px] border border-[#EED5E1] bg-white p-3.5">
     <View className="flex-row items-center justify-between">
       <Text className="text-[11px] font-medium uppercase tracking-[1px] text-healthcare-muted">{label}</Text>
       <Ionicons color="#8F6075" name={icon} size={14} />
     </View>
-    <Text className="mt-1 text-[16px] font-semibold text-healthcare-text">{value}</Text>
+    <Text className="mt-1.5 text-[16px] font-semibold text-healthcare-text">{value}</Text>
   </View>
 );
 

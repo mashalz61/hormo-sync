@@ -5,6 +5,7 @@ export default function CaloriesCycleTrackerScreen() {
     <FeatureScaffoldScreen
       title="Calories and cycle tracker"
       subtitle="See consumed and burned calories alongside your current cycle phase."
+      fallbackRoute="/tracker"
       sections={[
         {
           title: "Today’s snapshot",

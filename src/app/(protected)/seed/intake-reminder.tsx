@@ -7,6 +7,7 @@ export default function IntakeReminderScreen() {
     <FeatureScaffoldScreen
       title="Intake reminder"
       subtitle="Set a daily reminder to stay consistent with seed cycling."
+      fallbackRoute="/seed/seed-cycle-tracker"
       sections={[
         {
           title: "Reminder suggestion",

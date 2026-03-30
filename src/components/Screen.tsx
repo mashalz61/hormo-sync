@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
-import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { globalStyles, theme } from "@/theme";
 
@@ -10,6 +10,18 @@ interface ScreenProps extends PropsWithChildren {
 }
 
 export const Screen = ({ children, scroll = true, contentStyle }: ScreenProps) => {
+  const insets = useSafeAreaInsets();
+  const flattenedContentStyle = StyleSheet.flatten(contentStyle) || {};
+  const customPaddingBottom =
+    typeof flattenedContentStyle.paddingBottom === "number"
+      ? flattenedContentStyle.paddingBottom
+      : 0;
+
+  const scrollResolvedContentStyle = {
+    ...flattenedContentStyle,
+    paddingBottom: 120 + insets.bottom + customPaddingBottom,
+  };
+
   if (!scroll) {
     return (
       <SafeAreaView style={globalStyles.screen}>
@@ -23,8 +35,8 @@ export const Screen = ({ children, scroll = true, contentStyle }: ScreenProps) =
       <ScrollView
         contentContainerStyle={[
           globalStyles.content,
-          { paddingTop: theme.spacing.lg, paddingBottom: 120, gap: theme.spacing.lg },
-          contentStyle,
+          { paddingTop: theme.spacing.lg, gap: theme.spacing.lg },
+          scrollResolvedContentStyle,
         ]}
         showsVerticalScrollIndicator={false}
       >

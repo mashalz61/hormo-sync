@@ -6,6 +6,7 @@ export default function CycleSummaryScreen() {
     <FeatureScaffoldScreen
       title="Cycle summary"
       subtitle="Understand your average cycle length, regularity, and potential irregular patterns."
+      fallbackRoute="/tracker"
       sections={[
         {
           title: "Cycle overview",

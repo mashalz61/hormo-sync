@@ -1,15 +1,20 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 import { seedRecommendations } from "@/data/mockData";
+import { CyclePhase } from "@/types";
 import { FeatureScaffoldScreen } from "@/components/FeatureScaffoldScreen";
 
 export default function HowToConsumeScreen() {
-  const current = seedRecommendations[1];
+  const { phase } = useLocalSearchParams<{ phase?: string }>();
+  const resolvedPhase = (phase as CyclePhase) ?? "Follicular";
+  const current =
+    seedRecommendations.find((item) => item.phase === resolvedPhase) ?? seedRecommendations[1];
 
   return (
     <FeatureScaffoldScreen
       title="How to consume"
-      subtitle="Easy ways to add seeds to everyday meals."
+      subtitle="Easy ways to add the selected phase seeds to everyday meals."
+      fallbackRoute="/seed/seed-cycle-tracker"
       sections={[
         {
           title: "Serving ideas",

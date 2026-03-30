@@ -7,6 +7,7 @@ export default function IntakeTrackingScreen() {
     <FeatureScaffoldScreen
       title="Intake tracking"
       subtitle="Mark daily seed intake completion and build consistency over time."
+      fallbackRoute="/seed/seed-cycle-tracker"
       sections={[
         {
           title: "Today’s status",

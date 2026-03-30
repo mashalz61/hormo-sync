@@ -4,28 +4,37 @@ import { assessmentResults, meals, mockUser, reminders } from "@/data/mockData";
 import { Reminder } from "@/types";
 
 interface AppState {
-  hasSeenOnboarding: boolean;
   isAuthenticated: boolean;
   userName: string;
   reminders: Reminder[];
-  markOnboardingComplete: () => void;
+  reminderFeedback: string | null;
   login: (email: string) => void;
   logout: () => void;
+  setUserName: (name: string) => void;
   addReminder: (reminder: Reminder) => void;
+  updateReminder: (id: string, updates: Partial<Reminder>) => void;
   toggleReminder: (id: string) => void;
+  setReminderFeedback: (message: string) => void;
+  clearReminderFeedback: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
-  hasSeenOnboarding: false,
   isAuthenticated: false,
   userName: mockUser.firstName,
   reminders,
-  markOnboardingComplete: () => set({ hasSeenOnboarding: true }),
+  reminderFeedback: null,
   login: () => set({ isAuthenticated: true }),
   logout: () => set({ isAuthenticated: false }),
+  setUserName: (name) => set({ userName: name }),
   addReminder: (reminder) =>
     set((state) => ({
       reminders: [reminder, ...state.reminders],
+    })),
+  updateReminder: (id, updates) =>
+    set((state) => ({
+      reminders: state.reminders.map((item) =>
+        item.id === id ? { ...item, ...updates } : item,
+      ),
     })),
   toggleReminder: (id) =>
     set((state) => ({
@@ -33,6 +42,8 @@ export const useAppStore = create<AppState>((set) => ({
         item.id === id ? { ...item, enabled: !item.enabled } : item,
       ),
     })),
+  setReminderFeedback: (message) => set({ reminderFeedback: message }),
+  clearReminderFeedback: () => set({ reminderFeedback: null }),
 }));
 
 export const homeSnapshot = {

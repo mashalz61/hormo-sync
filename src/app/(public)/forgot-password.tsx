@@ -1,13 +1,10 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { Alert } from "react-native";
 
+import { AuthShell } from "@/components/AuthShell";
 import { CustomButton } from "@/components/CustomButton";
-import { InfoCard } from "@/components/InfoCard";
 import { InputField } from "@/components/InputField";
-import { Screen } from "@/components/Screen";
-import { SectionTitle } from "@/components/SectionTitle";
-import { theme } from "@/theme";
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");
@@ -23,15 +20,11 @@ export default function ForgotPasswordScreen() {
   };
 
   return (
-    <Screen contentStyle={styles.container}>
-      <SectionTitle
-        title="Reset your password"
-        subtitle="We’ll send a secure link so you can get back to your health plan."
-      />
-      <InfoCard
-        title="Mock flow"
-        description="TODO: Connect this screen to your real password reset endpoint."
-      />
+    <AuthShell
+      eyebrow="Password help"
+      title="Reset password"
+      subtitle="Enter your email to receive a reset link."
+    >
       <InputField
         autoCapitalize="none"
         keyboardType="email-address"
@@ -40,13 +33,6 @@ export default function ForgotPasswordScreen() {
         onChangeText={setEmail}
       />
       <CustomButton label="Send Reset Link" onPress={handleReset} />
-    </Screen>
+    </AuthShell>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    gap: theme.spacing.xl,
-    paddingTop: theme.spacing.xxxl,
-  },
-});

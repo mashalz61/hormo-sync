@@ -1,15 +1,20 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 import { seedRecommendations } from "@/data/mockData";
+import { CyclePhase } from "@/types";
 import { FeatureScaffoldScreen } from "@/components/FeatureScaffoldScreen";
 
 export default function RecommendedSeedsScreen() {
-  const current = seedRecommendations[1];
+  const { phase } = useLocalSearchParams<{ phase?: string }>();
+  const resolvedPhase = (phase as CyclePhase) ?? "Follicular";
+  const current =
+    seedRecommendations.find((item) => item.phase === resolvedPhase) ?? seedRecommendations[1];
 
   return (
     <FeatureScaffoldScreen
       title="Recommended seeds"
-      subtitle="Suggestions based on your current cycle phase."
+      subtitle="Suggestions based on the phase you selected."
+      fallbackRoute="/seed/seed-cycle-tracker"
       sections={[
         {
           title: current.phase,

@@ -72,10 +72,3 @@ export interface HormonalSummary {
   description: string;
   tests: string[];
 }
-
-export interface OnboardingSlide {
-  id: string;
-  title: string;
-  description: string;
-  accent: string;
-}

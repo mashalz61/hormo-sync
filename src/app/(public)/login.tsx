@@ -1,11 +1,10 @@
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
+import { AuthShell } from "@/components/AuthShell";
 import { CustomButton } from "@/components/CustomButton";
 import { InputField } from "@/components/InputField";
-import { Screen } from "@/components/Screen";
-import { SectionTitle } from "@/components/SectionTitle";
 import { useAppStore } from "@/store/appStore";
 import { theme } from "@/theme";
 
@@ -25,11 +24,16 @@ export default function LoginScreen() {
   };
 
   return (
-    <Screen contentStyle={styles.container}>
-      <SectionTitle
-        title="Welcome back"
-        subtitle="Continue your wellness plan, reminders, and assessment progress."
-      />
+    <AuthShell
+      eyebrow="Welcome back"
+      title="Log in"
+      subtitle="Continue to your dashboard."
+      footer={
+        <Link href="/signup" style={styles.footerLink}>
+          Need an account? Sign up
+        </Link>
+      }
+    >
       <View style={styles.form}>
         <InputField
           autoCapitalize="none"
@@ -44,36 +48,25 @@ export default function LoginScreen() {
           value={password}
           onChangeText={setPassword}
         />
-        <Link href="/forgot-password" style={styles.link}>
-          Forgot password?
-        </Link>
       </View>
-      <CustomButton label="Log In" onPress={handleLogin} />
-      <View style={styles.socialRow}>
-        <CustomButton label="Continue with Apple" variant="ghost" />
-        <CustomButton label="Continue with Google" variant="ghost" />
-      </View>
-      <Link href="/signup" style={styles.footerLink}>
-        Need an account? Sign up
+
+      <Link href="/forgot-password" style={styles.link}>
+        Forgot password?
       </Link>
-    </Screen>
+
+      <CustomButton label="Log In" onPress={handleLogin} />
+    </AuthShell>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    gap: theme.spacing.xl,
-    paddingTop: theme.spacing.xxxl,
-  },
   form: {
     gap: theme.spacing.lg,
   },
   link: {
     ...theme.typography.bodyStrong,
     color: theme.colors.primaryDark,
-  },
-  socialRow: {
-    gap: theme.spacing.md,
+    textAlign: "right",
   },
   footerLink: {
     ...theme.typography.body,

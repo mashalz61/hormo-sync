@@ -3,7 +3,6 @@ import {
   CycleLog,
   HormonalSummary,
   MealEntry,
-  OnboardingSlide,
   Reminder,
   SeedRecommendation,
   Service,
@@ -20,37 +19,6 @@ export const mockUser: UserProfile = {
   cyclePhase: "Follicular",
   initials: "AK",
 };
-
-export const onboardingSlides: OnboardingSlide[] = [
-  {
-    id: "cycle",
-    title: "Track your cycle with clarity",
-    description:
-      "Follow your period, spot patterns, and understand your monthly rhythm with calm, simple tracking.",
-    accent: "#F7D8D1",
-  },
-  {
-    id: "assessment",
-    title: "Assess PCOS and insulin resistance risk",
-    description:
-      "Capture supportive health signals and receive informational risk insights designed for early awareness.",
-    accent: "#F4D7BD",
-  },
-  {
-    id: "habits",
-    title: "Monitor symptoms, food, and lifestyle",
-    description:
-      "Bring meals, movement, symptoms, and daily wellness habits into one thoughtful routine.",
-    accent: "#E7DEC8",
-  },
-  {
-    id: "reminders",
-    title: "Get reminders and supportive guidance",
-    description:
-      "Stay consistent with gentle nudges for hydration, exercise, sleep, and seed cycling.",
-    accent: "#E6D9E8",
-  },
-];
 
 export const services: Service[] = [
   {

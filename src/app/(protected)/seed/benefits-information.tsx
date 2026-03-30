@@ -7,6 +7,7 @@ export default function BenefitsInformationScreen() {
     <FeatureScaffoldScreen
       title="Benefits information"
       subtitle="Learn how seed cycling is commonly used as a supportive wellness practice."
+      fallbackRoute="/seed/seed-cycle-tracker"
       sections={[
         {
           title: "Potential benefits",

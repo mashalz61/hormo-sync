@@ -8,6 +8,7 @@ export default function ProtectedLayout() {
       <Stack.Screen name="tracker" />
       <Stack.Screen name="reminders" />
       <Stack.Screen name="seed" />
+      <Stack.Screen name="settings" />
     </Stack>
   );
 }

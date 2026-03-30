@@ -7,6 +7,7 @@ export default function CyclePhaseDetectionScreen() {
     <FeatureScaffoldScreen
       title="Cycle phase detection"
       subtitle="Identify your likely current phase for more aligned reminders and seed suggestions."
+      fallbackRoute="/seed/seed-cycle-tracker"
       sections={[
         {
           title: "Detected phase",
@@ -15,7 +16,12 @@ export default function CyclePhaseDetectionScreen() {
         },
       ]}
       ctaLabel="See recommended seeds"
-      onCtaPress={() => router.push("/seed/recommended-seeds")}
+      onCtaPress={() =>
+        router.push({
+          pathname: "/seed/recommended-seeds",
+          params: { phase: "Follicular" },
+        })
+      }
     />
   );
 }

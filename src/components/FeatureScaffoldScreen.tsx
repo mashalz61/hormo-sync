@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 import { AssessmentResult } from "@/types";
@@ -9,7 +9,7 @@ import { InfoCard } from "./InfoCard";
 import { ProgressStepper } from "./ProgressStepper";
 import { ResultCard } from "./ResultCard";
 import { Screen } from "./Screen";
-import { SectionTitle } from "./SectionTitle";
+import { ChildRouteHeader } from "./ChildRouteHeader";
 
 interface FeatureScaffoldScreenProps {
   title: string;
@@ -27,6 +27,8 @@ interface FeatureScaffoldScreenProps {
   result?: AssessmentResult;
   ctaLabel?: string;
   onCtaPress?: () => void;
+  fallbackRoute?: Href;
+  backLabel?: string;
 }
 
 export const FeatureScaffoldScreen = ({
@@ -37,9 +39,16 @@ export const FeatureScaffoldScreen = ({
   result,
   ctaLabel = "Continue",
   onCtaPress,
+  fallbackRoute,
+  backLabel,
 }: FeatureScaffoldScreenProps) => (
   <Screen>
-    <SectionTitle subtitle={subtitle} title={title} />
+    <ChildRouteHeader
+      title={title}
+      subtitle={subtitle}
+      fallbackRoute={fallbackRoute}
+      backLabel={backLabel}
+    />
     {progress ? (
       <ProgressStepper
         currentStep={progress.step}

@@ -7,6 +7,7 @@ export default function AddExerciseScreen() {
     <FeatureScaffoldScreen
       title="Add exercise"
       subtitle="Track walking, running, yoga, gym work, or any custom activity."
+      fallbackRoute="/tracker"
       sections={[
         {
           title: "Exercise options",

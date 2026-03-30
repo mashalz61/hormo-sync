@@ -29,24 +29,19 @@ const tabIcon =
 const homeLogoIcon = ({ focused }: { focused: boolean }) => (
   <View
     style={{
-      width: focused ? 38 : 34,
-      height: focused ? 38 : 34,
-      borderRadius: 14,
+      width: 34,
+      height: 34,
+      borderRadius: 12,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: focused ? theme.colors.primary : "#F9EDF2",
     }}
   >
-    <Text
-      style={{
-        fontSize: 15,
-        fontWeight: "800",
-        color: focused ? theme.colors.white : theme.colors.primary,
-        marginTop: -0.5,
-      }}
-    >
-      H
-    </Text>
+    <Ionicons
+      color={focused ? theme.colors.white : theme.colors.primary}
+      name={focused ? "home" : "home-outline"}
+      size={20}
+    />
   </View>
 );
 
@@ -82,6 +77,7 @@ export default function TabsLayout() {
 
   return (
     <Tabs
+      initialRouteName="home/index"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: theme.colors.primary,
@@ -112,15 +108,15 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="assessments"
-        options={tabOptions("Assess", "bar-chart", "bar-chart-outline")}
+        name="assessments/index"
+        options={tabOptions("Insights", "bar-chart", "bar-chart-outline")}
       />
       <Tabs.Screen
-        name="tracker"
+        name="tracker/index"
         options={tabOptions("Tracker", "calendar", "calendar-outline")}
       />
       <Tabs.Screen
-        name="home"
+        name="home/index"
         options={{
           title: "Home",
           tabBarIcon: homeLogoIcon,
@@ -128,11 +124,11 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="reminders"
+        name="reminders/index"
         options={tabOptions("Reminders", "notifications", "notifications-outline")}
       />
       <Tabs.Screen
-        name="settings"
+        name="settings/index"
         options={tabOptions("Settings", "settings", "settings-outline")}
       />
     </Tabs>
