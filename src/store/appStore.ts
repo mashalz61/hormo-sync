@@ -8,6 +8,12 @@ interface AppState {
   userName: string;
   reminders: Reminder[];
   reminderFeedback: string | null;
+  pcosAssessmentDraft: {
+    age: string;
+    weight: string;
+    cyclePattern: "Regular" | "Irregular";
+    weightGain: boolean;
+  };
   login: (email: string) => void;
   logout: () => void;
   setUserName: (name: string) => void;
@@ -16,13 +22,25 @@ interface AppState {
   toggleReminder: (id: string) => void;
   setReminderFeedback: (message: string) => void;
   clearReminderFeedback: () => void;
+  updatePcosAssessmentDraft: (
+    updates: Partial<AppState["pcosAssessmentDraft"]>,
+  ) => void;
+  resetPcosAssessmentDraft: () => void;
 }
+
+const initialPcosAssessmentDraft: AppState["pcosAssessmentDraft"] = {
+  age: "28",
+  weight: "68",
+  cyclePattern: "Irregular",
+  weightGain: true,
+};
 
 export const useAppStore = create<AppState>((set) => ({
   isAuthenticated: false,
   userName: mockUser.firstName,
   reminders,
   reminderFeedback: null,
+  pcosAssessmentDraft: initialPcosAssessmentDraft,
   login: () => set({ isAuthenticated: true }),
   logout: () => set({ isAuthenticated: false }),
   setUserName: (name) => set({ userName: name }),
@@ -44,6 +62,14 @@ export const useAppStore = create<AppState>((set) => ({
     })),
   setReminderFeedback: (message) => set({ reminderFeedback: message }),
   clearReminderFeedback: () => set({ reminderFeedback: null }),
+  updatePcosAssessmentDraft: (updates) =>
+    set((state) => ({
+      pcosAssessmentDraft: {
+        ...state.pcosAssessmentDraft,
+        ...updates,
+      },
+    })),
+  resetPcosAssessmentDraft: () => set({ pcosAssessmentDraft: initialPcosAssessmentDraft }),
 }));
 
 export const homeSnapshot = {

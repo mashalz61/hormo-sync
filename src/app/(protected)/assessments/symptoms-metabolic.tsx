@@ -10,13 +10,16 @@ import { ProgressStepper } from "@/components/ProgressStepper";
 import { Screen } from "@/components/Screen";
 import { ToggleRow } from "@/components/ToggleRow";
 import { symptomOptions } from "@/data/mockData";
+import { useAppStore } from "@/store/appStore";
 import { theme } from "@/theme";
 
 export default function SymptomsMetabolicScreen() {
+  const weightGain = useAppStore((state) => state.pcosAssessmentDraft.weightGain);
+  const updateAssessmentDraft = useAppStore((state) => state.updatePcosAssessmentDraft);
   const [selected, setSelected] = useState<Record<string, boolean>>({
     acne: true,
     hair_growth: false,
-    weight_gain: true,
+    weight_gain: weightGain,
     hair_thinning: false,
     dark_patches: true,
     fatigue: true,
@@ -57,12 +60,16 @@ export default function SymptomsMetabolicScreen() {
                 title={option.label}
                 subtitle={option.helperText}
                 value={Boolean(selected[option.id])}
-                onValueChange={(value) =>
+                onValueChange={(value) => {
                   setSelected((prev) => ({
                     ...prev,
                     [option.id]: value,
-                  }))
-                }
+                  }));
+
+                  if (option.id === "weight_gain") {
+                    updateAssessmentDraft({ weightGain: value });
+                  }
+                }}
               />
             ))}
         </View>
@@ -111,7 +118,10 @@ export default function SymptomsMetabolicScreen() {
       <View style={styles.ctaContainer}>
         <CustomButton
           label="Continue to Step 3"
-          onPress={() => router.push("/assessments/lab-results-input")}
+          onPress={() => {
+            updateAssessmentDraft({ weightGain: Boolean(selected.weight_gain) });
+            router.push("/assessments/lab-results-input");
+          }}
         />
       </View>
     </Screen>
