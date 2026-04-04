@@ -252,19 +252,6 @@ export default function FinalAssessmentScreen() {
   );
 }
 
-function ErrorBanner({ error }: { error: AppApiError }) {
-  return (
-    <View style={styles.errorBanner}>
-      <Text style={styles.errorTitle}>{error.message}</Text>
-      {error.details?.map((item: string) => (
-        <Text key={item} style={styles.errorDetail}>
-          • {item}
-        </Text>
-      ))}
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   content: {
     paddingBottom: theme.spacing.xxxl,

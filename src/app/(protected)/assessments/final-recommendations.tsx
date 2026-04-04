@@ -117,17 +117,31 @@ const FancyLoader = () => (
     style={styles.loaderGradient}
   >
     <View style={styles.loaderCard}>
-      <View style={styles.loaderIcon}>
-        <ActivityIndicator color={theme.colors.primary} size="large" />
+      <View style={styles.loaderOrbRow}>
+        <View style={styles.loaderOrb}>
+          <Ionicons color={theme.colors.primary} name="analytics-outline" size={18} />
+        </View>
+        <View style={styles.loaderOrbCenter}>
+          <ActivityIndicator color={theme.colors.primary} size="large" />
+        </View>
+        <View style={styles.loaderOrb}>
+          <Ionicons color={theme.colors.primary} name="sparkles-outline" size={18} />
+        </View>
       </View>
       <Text style={styles.loaderTitle}>Preparing your final recommendation</Text>
       <Text style={styles.loaderDescription}>
-        We are sending your assessment data for PCOS prediction and shaping the result into a clearer recommendation view.
+        Sending your assessment to the PCOS model and preparing a cleaner summary.
       </Text>
       <View style={styles.loaderSteps}>
-        <Text style={styles.loaderStep}>• Validating your assessment values</Text>
-        <Text style={styles.loaderStep}>• Running the PCOS model</Text>
-        <Text style={styles.loaderStep}>• Formatting a readable recommendation</Text>
+        <View style={styles.loaderStepChip}>
+          <Text style={styles.loaderStep}>Checking values</Text>
+        </View>
+        <View style={styles.loaderStepChip}>
+          <Text style={styles.loaderStep}>Running model</Text>
+        </View>
+        <View style={styles.loaderStepChip}>
+          <Text style={styles.loaderStep}>Formatting result</Text>
+        </View>
       </View>
     </View>
   </LinearGradient>
@@ -241,6 +255,22 @@ export default function FinalRecommendationsScreen() {
         title="Final PCOS Recommendation"
       />
 
+      {pcosState.status !== "success" ? (
+        <FormSection>
+          <View style={styles.noteRow}>
+            <View style={styles.noteIconWrap}>
+              <Ionicons color={theme.colors.primary} name="information-circle-outline" size={18} />
+            </View>
+            <View style={styles.noteCopy}>
+              <Text style={styles.noteTitle}>Live prediction needs the API</Text>
+              <Text style={styles.noteText}>
+                If the backend is unavailable, the final PCOS result will stay unavailable until the API responds.
+              </Text>
+            </View>
+          </View>
+        </FormSection>
+      ) : null}
+
       {!parsedValues.success || !isReadyForPrediction(featureCount) ? (
         <FormSection>
           <Text style={styles.cardTitle}>Assessment data incomplete</Text>
@@ -263,7 +293,7 @@ export default function FinalRecommendationsScreen() {
         <CustomButton
           label="Retake 4-Step Assessment"
           onPress={() => router.replace("/assessments/basic-health")}
-          variant="ghost"
+          variant="secondary"
         />
       </View>
     </Screen>
@@ -275,7 +305,7 @@ const styles = StyleSheet.create({
     paddingBottom: theme.spacing.xxxl,
   },
   predictionStack: {
-    gap: theme.spacing.lg,
+    gap: theme.spacing.xl,
   },
   heroGradient: {
     borderRadius: 24,
@@ -342,14 +372,30 @@ const styles = StyleSheet.create({
     padding: theme.spacing.xl,
     gap: theme.spacing.lg,
     alignItems: "center",
+    overflow: "hidden",
   },
-  loaderIcon: {
-    width: 76,
-    height: 76,
-    borderRadius: 24,
+  loaderOrbRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.spacing.md,
+  },
+  loaderOrb: {
+    width: 52,
+    height: 52,
+    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FCE7F0",
+  },
+  loaderOrbCenter: {
+    width: 78,
+    height: 78,
+    borderRadius: 26,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F9DCE8",
+    borderWidth: 1,
+    borderColor: "#F2C7D8",
   },
   loaderTitle: {
     ...theme.typography.title2,
@@ -362,15 +408,50 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   loaderSteps: {
-    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
     gap: theme.spacing.sm,
   },
+  loaderStepChip: {
+    backgroundColor: "#FCEAF2",
+    borderRadius: theme.radius.pill,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    borderWidth: 1,
+    borderColor: "#F4D0DF",
+  },
   loaderStep: {
-    ...theme.typography.bodyStrong,
-    color: theme.colors.text,
+    ...theme.typography.small,
+    color: theme.colors.primary,
     textAlign: "center",
   },
   incompleteCopy: {
+    ...theme.typography.body,
+    color: theme.colors.textMuted,
+  },
+  noteRow: {
+    flexDirection: "row",
+    gap: theme.spacing.md,
+    alignItems: "flex-start",
+  },
+  noteIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F7E7EF",
+  },
+  noteCopy: {
+    flex: 1,
+    gap: theme.spacing.xs,
+  },
+  noteTitle: {
+    ...theme.typography.bodyStrong,
+    color: theme.colors.text,
+  },
+  noteText: {
     ...theme.typography.body,
     color: theme.colors.textMuted,
   },

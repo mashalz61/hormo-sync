@@ -55,17 +55,19 @@ export const normalizePredictionResponse = (
       normalizedResponse.result ??
       normalizedResponse.label ??
       normalizedResponse.pcos_level ??
+      normalizedResponse.pcos_risk_level ??
       normalizedResponse.risk ??
       "No prediction returned",
   );
   const confidenceValue =
     parseMetric(normalizedResponse.pcos_probability) ??
+    parseMetric(normalizedResponse.pcos_probability_of_developing) ??
     parseMetric(normalizedResponse.confidence) ??
     parseMetric(normalizedResponse.probability) ??
     parseMetric(normalizedResponse.score);
 
   const details = Object.entries(normalizedResponse)
-    .filter(([key, value]) => !["prediction", "result", "label", "risk", "pcos_level", "pcos_present", "pcos_probability", "probability", "confidence", "score", "recommendations"].includes(key) && value !== null && value !== undefined)
+    .filter(([key, value]) => !["prediction", "result", "label", "risk", "pcos_level", "pcos_present", "pcos_probability", "pcos_risk_level", "pcos_probability_of_developing", "probability", "confidence", "score", "recommendations"].includes(key) && value !== null && value !== undefined)
     .slice(0, 6)
     .map(([key, value]) => ({
       label: humanizeKey(key),
@@ -86,7 +88,7 @@ export const normalizePredictionResponse = (
     rawLabel,
     confidenceText:
       confidenceValue !== undefined
-        ? `${confidenceValue > 1 ? confidenceValue.toFixed(2) : `${Math.round(confidenceValue * 100)}%`} confidence`
+        ? `Probability ${confidenceValue.toFixed(3)}`
         : undefined,
     summary:
       typeof normalizedResponse.message === "string"
@@ -114,19 +116,23 @@ export const toAssessmentResult = (prediction: NormalizedPredictionResult): Asse
 
 export const predictionService = {
   getHealth: () => apiClient.request<HealthResponse>("/health"),
-  predictPcos: (payload: PredictionRequest) => {
+  async predictPcos(payload: PredictionRequest) {
     console.log("POST /predict/pcos payload", payload);
-    return apiClient.request<PredictionResponseRaw>("/predict/pcos", {
+    const response = await apiClient.request<PredictionResponseRaw>("/predict/pcos", {
       method: "POST",
       body: JSON.stringify(payload),
     });
+    console.log("POST /predict/pcos response", response);
+    return response;
   },
-  predictIr: (payload: PredictionRequest) => {
+  async predictIr(payload: PredictionRequest) {
     console.log("POST /predict/ir payload", payload);
-    return apiClient.request<PredictionResponseRaw>("/predict/ir", {
+    const response = await apiClient.request<PredictionResponseRaw>("/predict/ir", {
       method: "POST",
       body: JSON.stringify(payload),
     });
+    console.log("POST /predict/ir response", response);
+    return response;
   },
 };
 
