@@ -2,18 +2,17 @@ import { create } from "zustand";
 
 import { assessmentResults, meals, mockUser, reminders } from "@/data/mockData";
 import { Reminder } from "@/types";
+import {
+  PCOSFormValues,
+  pcosFormDefaults,
+} from "@/app/(protected)/assessments/pcosForm.schema";
 
 interface AppState {
   isAuthenticated: boolean;
   userName: string;
   reminders: Reminder[];
   reminderFeedback: string | null;
-  pcosAssessmentDraft: {
-    age: string;
-    weight: string;
-    cyclePattern: "Regular" | "Irregular";
-    weightGain: boolean;
-  };
+  pcosForm: Partial<PCOSFormValues>;
   login: (email: string) => void;
   logout: () => void;
   setUserName: (name: string) => void;
@@ -22,25 +21,16 @@ interface AppState {
   toggleReminder: (id: string) => void;
   setReminderFeedback: (message: string) => void;
   clearReminderFeedback: () => void;
-  updatePcosAssessmentDraft: (
-    updates: Partial<AppState["pcosAssessmentDraft"]>,
-  ) => void;
-  resetPcosAssessmentDraft: () => void;
+  updatePcosForm: (values: Partial<PCOSFormValues>) => void;
+  resetPcosForm: () => void;
 }
-
-const initialPcosAssessmentDraft: AppState["pcosAssessmentDraft"] = {
-  age: "28",
-  weight: "68",
-  cyclePattern: "Irregular",
-  weightGain: true,
-};
 
 export const useAppStore = create<AppState>((set) => ({
   isAuthenticated: false,
   userName: mockUser.firstName,
   reminders,
   reminderFeedback: null,
-  pcosAssessmentDraft: initialPcosAssessmentDraft,
+  pcosForm: pcosFormDefaults,
   login: () => set({ isAuthenticated: true }),
   logout: () => set({ isAuthenticated: false }),
   setUserName: (name) => set({ userName: name }),
@@ -62,14 +52,14 @@ export const useAppStore = create<AppState>((set) => ({
     })),
   setReminderFeedback: (message) => set({ reminderFeedback: message }),
   clearReminderFeedback: () => set({ reminderFeedback: null }),
-  updatePcosAssessmentDraft: (updates) =>
+  updatePcosForm: (values) =>
     set((state) => ({
-      pcosAssessmentDraft: {
-        ...state.pcosAssessmentDraft,
-        ...updates,
+      pcosForm: {
+        ...state.pcosForm,
+        ...values,
       },
     })),
-  resetPcosAssessmentDraft: () => set({ pcosAssessmentDraft: initialPcosAssessmentDraft }),
+  resetPcosForm: () => set({ pcosForm: pcosFormDefaults }),
 }));
 
 export const homeSnapshot = {

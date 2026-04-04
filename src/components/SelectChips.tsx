@@ -6,26 +6,33 @@ interface SelectChipsProps {
   options: string[];
   value?: string;
   onChange?: (value: string) => void;
+  errorText?: string;
 }
 
-export const SelectChips = ({ options, value, onChange }: SelectChipsProps) => (
-  <View style={styles.container}>
-    {options.map((option) => {
-      const isActive = option === value;
-      return (
-        <Pressable
-          key={option}
-          onPress={() => onChange?.(option)}
-          style={[styles.chip, isActive && styles.chipActive]}
-        >
-          <Text style={[styles.text, isActive && styles.textActive]}>{option}</Text>
-        </Pressable>
-      );
-    })}
+export const SelectChips = ({ options, value, onChange, errorText }: SelectChipsProps) => (
+  <View style={styles.wrapper}>
+    <View style={styles.container}>
+      {options.map((option) => {
+        const isActive = option === value;
+        return (
+          <Pressable
+            key={option}
+            onPress={() => onChange?.(option)}
+            style={[styles.chip, isActive && styles.chipActive, errorText && styles.chipError]}
+          >
+            <Text style={[styles.text, isActive && styles.textActive]}>{option}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+    {errorText ? <Text style={styles.error}>{errorText}</Text> : null}
   </View>
 );
 
 const styles = StyleSheet.create({
+  wrapper: {
+    gap: theme.spacing.sm,
+  },
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -43,11 +50,18 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
     borderColor: theme.colors.primary,
   },
+  chipError: {
+    borderColor: theme.colors.danger,
+  },
   text: {
     ...theme.typography.caption,
     color: theme.colors.text,
   },
   textActive: {
     color: theme.colors.white,
+  },
+  error: {
+    ...theme.typography.small,
+    color: theme.colors.danger,
   },
 });

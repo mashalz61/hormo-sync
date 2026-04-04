@@ -20,12 +20,22 @@ export const CustomButton = ({
   <Pressable
     disabled={disabled || loading}
     onPress={onPress}
-    style={[styles.base, styles[variant], (disabled || loading) && styles.disabled]}
+    style={[styles.base, styles[variant], disabled && styles.disabled]}
   >
     {loading ? (
-      <ActivityIndicator color={variant === "primary" ? theme.colors.white : theme.colors.text} />
+      <ActivityIndicator
+        color={variant === "primary" ? theme.colors.white : theme.colors.text}
+      />
     ) : (
-      <Text style={[styles.label, variant !== "primary" && styles.labelAlt]}>{label}</Text>
+      <Text
+        style={[
+          styles.label,
+          variant !== "primary" && styles.labelAlt,
+          disabled && styles.labelDisabled,
+        ]}
+      >
+        {label}
+      </Text>
     )}
   </Pressable>
 );
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surfaceMuted,
   },
   disabled: {
-    opacity: 0.55,
+    opacity: 0.5,
   },
   label: {
     ...theme.typography.bodyStrong,
@@ -58,5 +68,8 @@ const styles = StyleSheet.create({
   },
   labelAlt: {
     color: theme.colors.text,
+  },
+  labelDisabled: {
+    color: theme.colors.white,
   },
 });

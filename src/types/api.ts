@@ -1,23 +1,13 @@
-export interface PredictionFeatures {
-  "Age (yrs)": number;
-  "Weight (Kg)": number;
-  "Cycle(R/I)": number;
-  "Weight gain(Y/N)": number;
-  [key: string]: number;
-}
+import { RiskLevel } from "@/types";
 
-export interface PredictionRequest {
-  features: PredictionFeatures;
-}
-
-export interface ValidationErrorItem {
+export interface ApiValidationIssue {
   loc?: Array<string | number>;
   msg?: string;
   type?: string;
 }
 
 export interface ApiErrorPayload {
-  detail?: string | ValidationErrorItem[];
+  detail?: string | ApiValidationIssue[];
   message?: string;
   error?: string;
   [key: string]: unknown;
@@ -30,45 +20,33 @@ export interface HealthResponse {
   [key: string]: unknown;
 }
 
-export interface PredictionResponse {
+export interface PredictionRequest {
+  features: Record<string, number>;
+}
+
+export interface PredictionResponseRaw {
   prediction?: string | number | boolean;
   result?: string | number | boolean;
-  label?: string;
-  class?: string | number;
-  classification?: string | number;
-  outcome?: string | number | boolean;
+  label?: string | number | boolean;
   risk?: string;
-  probability?: number;
-  confidence?: number;
-  score?: number;
+  pcos_level?: string;
+  pcos_present?: boolean;
+  pcos_probability?: number | string;
+  probability?: number | string;
+  confidence?: number | string;
+  score?: number | string;
   message?: string;
   detail?: string;
-  summary?: string;
+  recommendations?: string[];
   [key: string]: unknown;
 }
 
-export type ApiErrorKind =
-  | "config"
-  | "network"
-  | "validation"
-  | "service_unavailable"
-  | "http"
-  | "unknown";
-
-export interface AppApiErrorShape {
-  kind: ApiErrorKind;
-  message: string;
-  status?: number;
-  details?: string[];
-  raw?: unknown;
-}
-
-export interface PredictionUiResult {
-  endpoint: "pcos" | "ir";
+export interface NormalizedPredictionResult {
   title: string;
-  verdict: string;
-  detail: string;
-  scoreLabel?: string;
-  scoreValue?: string;
-  raw: PredictionResponse;
+  risk: RiskLevel;
+  summary: string;
+  rawLabel: string;
+  confidenceText?: string;
+  recommendations: string[];
+  details: Array<{ label: string; value: string }>;
 }
