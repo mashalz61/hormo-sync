@@ -10,15 +10,18 @@ import { InputField } from "@/components/InputField";
 import { ProgressStepper } from "@/components/ProgressStepper";
 import { Screen } from "@/components/Screen";
 import { SelectChips } from "@/components/SelectChips";
+import { useAppStore } from "@/store/appStore";
 import { theme } from "@/theme";
 import { calculateBmi } from "@/utils/health";
 
 export default function BasicHealthScreen() {
-  const [age, setAge] = useState("28");
-  const [weight, setWeight] = useState("68");
+  const assessmentDraft = useAppStore((state) => state.pcosAssessmentDraft);
+  const updateAssessmentDraft = useAppStore((state) => state.updatePcosAssessmentDraft);
+  const [age, setAge] = useState(assessmentDraft.age);
+  const [weight, setWeight] = useState(assessmentDraft.weight);
   const [height, setHeight] = useState("165");
   const [cycleLength, setCycleLength] = useState("31");
-  const [cyclePattern, setCyclePattern] = useState("Irregular");
+  const [cyclePattern, setCyclePattern] = useState<"Regular" | "Irregular">(assessmentDraft.cyclePattern);
   const [missedPeriods, setMissedPeriods] = useState("Occasional delays");
 
   const bmi = useMemo(() => calculateBmi(parseNumber(weight), parseNumber(height)), [height, weight]);
@@ -60,7 +63,11 @@ export default function BasicHealthScreen() {
 
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldLabel}>Cycle pattern</Text>
-          <SelectChips options={["Regular", "Irregular"]} value={cyclePattern} onChange={setCyclePattern} />
+          <SelectChips
+            options={["Regular", "Irregular"]}
+            value={cyclePattern}
+            onChange={(value) => setCyclePattern(value as "Regular" | "Irregular")}
+          />
         </View>
 
         <View style={styles.fieldGroup}>
@@ -93,7 +100,14 @@ export default function BasicHealthScreen() {
       <View style={styles.ctaContainer}>
         <CustomButton
           label="Continue to Step 2"
-          onPress={() => router.push("/assessments/symptoms-metabolic")}
+          onPress={() => {
+            updateAssessmentDraft({
+              age,
+              weight,
+              cyclePattern,
+            });
+            router.push("/assessments/symptoms-metabolic");
+          }}
         />
       </View>
     </Screen>

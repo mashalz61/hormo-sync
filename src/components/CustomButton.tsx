@@ -7,6 +7,7 @@ interface CustomButtonProps {
   onPress?: () => void;
   variant?: "primary" | "secondary" | "ghost";
   loading?: boolean;
+  disabled?: boolean;
 }
 
 export const CustomButton = ({
@@ -14,8 +15,13 @@ export const CustomButton = ({
   onPress,
   variant = "primary",
   loading = false,
+  disabled = false,
 }: CustomButtonProps) => (
-  <Pressable onPress={onPress} style={[styles.base, styles[variant]]}>
+  <Pressable
+    disabled={disabled || loading}
+    onPress={onPress}
+    style={[styles.base, styles[variant], (disabled || loading) && styles.disabled]}
+  >
     {loading ? (
       <ActivityIndicator color={variant === "primary" ? theme.colors.white : theme.colors.text} />
     ) : (
@@ -42,6 +48,9 @@ const styles = StyleSheet.create({
   },
   ghost: {
     backgroundColor: theme.colors.surfaceMuted,
+  },
+  disabled: {
+    opacity: 0.55,
   },
   label: {
     ...theme.typography.bodyStrong,
