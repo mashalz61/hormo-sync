@@ -1,9 +1,13 @@
 export const colors = {
   background: "#FFF6F9",
+  backgroundStrong: "#FCECF3",
+  backgroundTint: "#F7E4ED",
   surface: "#FFFFFF",
   surfaceMuted: "#FCEFF4",
   surfaceAccent: "#FBE8F0",
+  surfaceElevated: "#FFF9FC",
   border: "#EBCFDC",
+  borderStrong: "#E1C0CF",
   text: "#4C3140",
   textMuted: "#7C5B69",
   textSoft: "#A78693",
@@ -89,5 +93,12 @@ export const shadows = {
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 10 },
     elevation: 4,
+  },
+  float: {
+    shadowColor: colors.black,
+    shadowOpacity: 0.12,
+    shadowRadius: 22,
+    shadowOffset: { width: 0, height: 14 },
+    elevation: 8,
   },
 };

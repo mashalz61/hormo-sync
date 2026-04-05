@@ -44,16 +44,16 @@ export const DashboardCard = ({ service, onPress }: DashboardCardProps) => {
       }}
       style={[styles.cardWrap, animatedStyle]}
     >
-      <View className="h-[194px] rounded-[18px] border border-healthcare-border bg-white p-4">
+      <View className="h-[208px] rounded-[22px] border border-healthcare-border bg-[rgba(255,255,255,0.94)] p-4">
         <View className="mb-3 flex-row items-start justify-between">
-          <View className="h-10 w-10 items-center justify-center rounded-xl bg-[#F9EDF2]">
+          <View className="h-11 w-11 items-center justify-center rounded-[14px] bg-[#F9EDF2]">
             <Ionicons
               color="#CC5C89"
               name={service.icon as keyof typeof Ionicons.glyphMap}
-              size={18}
+              size={19}
             />
           </View>
-          <View className="rounded-full bg-[#FDEFF5] px-2 py-1">
+          <View className="rounded-full border border-[#F2D7E3] bg-[#FDEFF5] px-2.5 py-1">
             <Text className="text-[10px] font-semibold tracking-[0.3px] text-healthcare-muted">
               {category}
             </Text>
@@ -61,21 +61,23 @@ export const DashboardCard = ({ service, onPress }: DashboardCardProps) => {
         </View>
 
         <Text
-          className="text-[14px] font-semibold leading-5 text-healthcare-text"
+          className="text-[15px] font-semibold leading-5 text-healthcare-text"
           numberOfLines={2}
         >
           {service.title}
         </Text>
         <Text
-          className="mt-1 text-[12px] leading-4 text-healthcare-muted"
+          className="mt-1.5 text-[12px] leading-[18px] text-healthcare-muted"
           numberOfLines={3}
         >
           {service.description}
         </Text>
 
-        <View className="mt-auto flex-row items-center justify-between border-t border-[#F3DBE7] pt-2.5">
+        <View className="mt-auto flex-row items-center justify-between border-t border-[#F3DBE7] pt-3">
           <Text className="text-[12px] font-semibold text-healthcare-primary">Open tool</Text>
-          <Ionicons color="#CC5C89" name="chevron-forward" size={16} />
+          <View className="h-8 w-8 items-center justify-center rounded-full bg-[#FAEDF3]">
+            <Ionicons color="#CC5C89" name="chevron-forward" size={16} />
+          </View>
         </View>
       </View>
     </AnimatedPressable>
@@ -95,11 +97,11 @@ const getServiceCategory = (title: string): string => {
 
 const styles = StyleSheet.create({
   cardWrap: {
-    borderRadius: 18,
+    borderRadius: 22,
     shadowColor: "#5A3A48",
     shadowOpacity: Platform.OS === "ios" ? 0.08 : 0,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 8 },
     elevation: 3,
   },
 });

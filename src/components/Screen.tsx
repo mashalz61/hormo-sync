@@ -25,6 +25,8 @@ export const Screen = ({ children, scroll = true, contentStyle }: ScreenProps) =
   if (!scroll) {
     return (
       <SafeAreaView style={globalStyles.screen}>
+        <View style={styles.backgroundOrbTop} />
+        <View style={styles.backgroundOrbBottom} />
         <View style={[globalStyles.content, { flex: 1 }, contentStyle]}>{children}</View>
       </SafeAreaView>
     );
@@ -32,10 +34,12 @@ export const Screen = ({ children, scroll = true, contentStyle }: ScreenProps) =
 
   return (
     <SafeAreaView style={globalStyles.screen}>
+      <View pointerEvents="none" style={styles.backgroundOrbTop} />
+      <View pointerEvents="none" style={styles.backgroundOrbBottom} />
       <ScrollView
         contentContainerStyle={[
           globalStyles.content,
-          { paddingTop: theme.spacing.lg, gap: theme.spacing.lg },
+          { paddingTop: theme.spacing.lg, gap: theme.spacing.xl },
           scrollResolvedContentStyle,
         ]}
         showsVerticalScrollIndicator={false}
@@ -45,3 +49,26 @@ export const Screen = ({ children, scroll = true, contentStyle }: ScreenProps) =
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundOrbTop: {
+    position: "absolute",
+    top: -90,
+    right: -60,
+    width: 220,
+    height: 220,
+    borderRadius: 999,
+    backgroundColor: theme.colors.backgroundTint,
+    opacity: 0.9,
+  },
+  backgroundOrbBottom: {
+    position: "absolute",
+    bottom: 90,
+    left: -90,
+    width: 180,
+    height: 180,
+    borderRadius: 999,
+    backgroundColor: theme.colors.backgroundStrong,
+    opacity: 0.7,
+  },
+});

@@ -76,9 +76,9 @@ export const ReminderItem = ({ reminder, onPress, onToggle }: ReminderItemProps)
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: theme.colors.surface,
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.lg,
+    backgroundColor: "rgba(255,255,255,0.94)",
+    borderRadius: theme.radius.xl,
+    padding: theme.spacing.xl,
     borderWidth: 1,
     borderColor: theme.colors.border,
     gap: theme.spacing.md,
@@ -97,9 +97,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconWrap: {
-    width: 30,
-    height: 30,
-    borderRadius: 10,
+    width: 34,
+    height: 34,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.colors.surfaceAccent,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     color: theme.colors.textMuted,
   },
   body: {
-    gap: 6,
+    gap: 8,
   },
   activity: {
     ...theme.typography.title3,
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   purpose: {
     ...theme.typography.body,
     color: theme.colors.textMuted,
+    lineHeight: 21,
   },
   footer: {
     flexDirection: "row",

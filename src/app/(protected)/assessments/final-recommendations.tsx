@@ -86,25 +86,11 @@ const PredictionSummary = ({ result }: { result: NormalizedPredictionResult }) =
               <Ionicons color={theme.colors.primary} name="sparkles-outline" size={22} />
             </View>
           </View>
-          {result.confidenceText ? <Text style={styles.confidencePill}>{result.confidenceText}</Text> : null}
         </View>
       </LinearGradient>
 
       <ResultCard result={assessment} />
 
-      {result.details.length > 0 ? (
-        <FormSection>
-          <Text style={styles.cardTitle}>Response details</Text>
-          <View style={styles.detailsWrap}>
-            {result.details.map((item) => (
-              <View key={`${result.title}-${item.label}`} style={styles.detailRow}>
-                <Text style={styles.detailLabel}>{item.label}</Text>
-                <Text style={styles.detailValue}>{item.value}</Text>
-              </View>
-            ))}
-          </View>
-        </FormSection>
-      ) : null}
     </View>
   );
 };
@@ -249,7 +235,7 @@ export default function FinalRecommendationsScreen() {
       <AssessmentRouteHeader title="Final Recommendations" />
 
       <AssessmentHeroCard
-        description="Your 4-step assessment is complete. Review a clearer PCOS prediction result with the submitted inputs that shaped it."
+        description="Your 4-step assessment is complete. Review a clearer PCOS prediction result and the next-step guidance."
         eyebrow="PCOS Review"
         icon="medical-outline"
         title="Final PCOS Recommendation"
@@ -285,16 +271,31 @@ export default function FinalRecommendationsScreen() {
       {pcosState.status === "success" ? <PredictionSummary result={pcosState.data} /> : null}
 
       <View style={styles.ctaStack}>
-        <CustomButton label="Retry Prediction" onPress={() => void runPrediction()} variant="secondary" />
+        <Pressable
+          disabled={pcosState.status === "loading"}
+          onPress={() => void runPrediction()}
+          style={[
+            styles.retryButton,
+            pcosState.status === "loading" && styles.retryButtonDisabled,
+          ]}
+        >
+          {pcosState.status === "loading" ? (
+            <ActivityIndicator color={theme.colors.primary} size="small" />
+          ) : (
+            <Text style={styles.retryButtonText}>Retry Prediction</Text>
+          )}
+        </Pressable>
         <CustomButton
           label="Go to Insights"
           onPress={() => router.replace("/assessments")}
         />
-        <CustomButton
-          label="Retake 4-Step Assessment"
+        <Pressable
           onPress={() => router.replace("/assessments/basic-health")}
-          variant="secondary"
-        />
+          style={styles.retakeButton}
+        >
+          <Ionicons color={theme.colors.primary} name="refresh-outline" size={16} />
+          <Text style={styles.retakeButtonText}>Retake 4-Step Assessment</Text>
+        </Pressable>
       </View>
     </Screen>
   );
@@ -348,15 +349,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F7E7EF",
-  },
-  confidencePill: {
-    alignSelf: "flex-start",
-    ...theme.typography.small,
-    color: theme.colors.primary,
-    backgroundColor: "#FCE8F1",
-    borderRadius: theme.radius.pill,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.xs,
   },
   cardTitle: {
     ...theme.typography.title3,
@@ -455,28 +447,43 @@ const styles = StyleSheet.create({
     ...theme.typography.body,
     color: theme.colors.textMuted,
   },
-  detailsWrap: {
-    gap: theme.spacing.sm,
-  },
-  detailRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: theme.spacing.md,
-  },
-  detailLabel: {
-    ...theme.typography.small,
-    color: theme.colors.textMuted,
-    flex: 1,
-  },
-  detailValue: {
-    ...theme.typography.bodyStrong,
-    color: theme.colors.text,
-    flex: 1,
-    textAlign: "right",
-  },
   ctaStack: {
     marginTop: theme.spacing.sm,
+    gap: theme.spacing.md,
+  },
+  retryButton: {
+    minHeight: 54,
+    borderRadius: theme.radius.pill,
+    borderWidth: 1,
+    borderColor: "#DDAFC2",
+    backgroundColor: "#FFF9FC",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: theme.spacing.xl,
+    ...theme.shadows.card,
+  },
+  retryButtonDisabled: {
+    opacity: 0.7,
+  },
+  retryButtonText: {
+    ...theme.typography.bodyStrong,
+    color: theme.colors.primary,
+  },
+  retakeButton: {
+    minHeight: 54,
+    borderRadius: theme.radius.pill,
+    borderWidth: 1,
+    borderColor: "#E8C8D6",
+    backgroundColor: "#FFF7FA",
+    paddingHorizontal: theme.spacing.xl,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: theme.spacing.sm,
+  },
+  retakeButtonText: {
+    ...theme.typography.bodyStrong,
+    color: theme.colors.primary,
   },
   alertOverlay: {
     flex: 1,

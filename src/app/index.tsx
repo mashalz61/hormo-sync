@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { AppLogo } from "@/components/AppLogo";
 import { useAppStore } from "@/store/appStore";
 import { theme } from "@/theme";
 
@@ -28,9 +29,7 @@ export default function IndexScreen() {
       <View style={styles.glowBottom} />
 
       <View style={styles.brandCard}>
-        <View style={styles.logo}>
-          <Text style={styles.logoText}>H</Text>
-        </View>
+        <AppLogo size={96} style={styles.logo} />
         <Text style={styles.title}>HormoSync</Text>
         <Text style={styles.subtitle}>
           Cycle, meal, and routine tracking with a calmer first step.
@@ -82,19 +81,8 @@ const styles = StyleSheet.create({
     ...theme.shadows.card,
   },
   logo: {
-    width: 96,
-    height: 96,
-    borderRadius: 32,
-    backgroundColor: theme.colors.primary,
-    alignItems: "center",
-    justifyContent: "center",
     marginBottom: theme.spacing.sm,
     ...theme.shadows.card,
-  },
-  logoText: {
-    fontSize: 42,
-    fontWeight: "700",
-    color: theme.colors.white,
   },
   title: {
     ...theme.typography.display,

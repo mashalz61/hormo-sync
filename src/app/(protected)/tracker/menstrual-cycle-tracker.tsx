@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { ChildRouteHeader } from "@/components/ChildRouteHeader";
@@ -7,57 +8,74 @@ import { CustomButton } from "@/components/CustomButton";
 import { DatePickerField } from "@/components/DatePickerField";
 import { FormSection } from "@/components/FormSection";
 import { Screen } from "@/components/Screen";
+import { useCycleTrackerStore } from "@/store/cycleTrackerStore";
 import { theme } from "@/theme";
-
-const cycleHighlights = [
-  {
-    label: "Current phase",
-    value: "Follicular",
-    icon: "sparkles-outline" as const,
-  },
-  {
-    label: "Last cycle",
-    value: "31 days",
-    icon: "calendar-outline" as const,
-  },
-  {
-    label: "Period length",
-    value: "5 days",
-    icon: "water-outline" as const,
-  },
-];
+import { buildCycleSummaryInsight } from "@/utils/cycleTracker";
 
 const reminders = [
-  "Log your dates as close to real time as possible for a clearer summary.",
-  "Tracking two cycles is enough to start spotting regularity patterns.",
+  "Cycle length is measured from the first day of one period to the first day of the next.",
+  "Phase and fertile-window cards are estimates from date tracking only, so they are less precise when cycles vary.",
 ];
 
 export default function MenstrualCycleTrackerScreen() {
+  const [showErrors, setShowErrors] = useState(false);
+  const { draft, logs, updateDraft, saveDraft } = useCycleTrackerStore();
+  const summary = buildCycleSummaryInsight(draft, logs);
+  const hasErrors = Object.keys(summary.validationErrors).length > 0;
+
+  const cycleHighlights = [
+    {
+      label: "Estimated phase",
+      value: summary.estimatedPhase ?? "Waiting for dates",
+      icon: "sparkles-outline" as const,
+    },
+    {
+      label: "Latest cycle",
+      value: summary.latestCompletedCycleLength
+        ? `${summary.latestCompletedCycleLength} days`
+        : "Need 2 starts",
+      icon: "calendar-outline" as const,
+    },
+    {
+      label: "This period",
+      value: summary.periodLength ? `${summary.periodLength} days` : "Add end date",
+      icon: "water-outline" as const,
+    },
+  ];
+
+  const handleContinue = () => {
+    setShowErrors(true);
+
+    if (hasErrors) {
+      return;
+    }
+
+    saveDraft();
+    router.push("/tracker/cycle-summary");
+  };
+
   return (
     <Screen contentStyle={styles.content}>
       <ChildRouteHeader
         fallbackRoute="/tracker"
         title="Menstrual cycle tracker"
-        subtitle="Capture your current and previous cycle dates to build a clearer view of timing, flow, and rhythm."
+        subtitle="Track two recent periods, then let the app calculate cycle length, bleeding length, and an estimated phase from your dates."
       />
 
       <View style={styles.heroCard}>
         <View style={styles.heroTopRow}>
           <View style={styles.heroBadge}>
             <Ionicons color={theme.colors.primaryDark} name="heart-outline" size={14} />
-            <Text style={styles.heroBadgeText}>Cycle Care</Text>
+            <Text style={styles.heroBadgeText}>Research-backed basics</Text>
           </View>
           <View style={styles.heroStatus}>
-            <Text style={styles.heroStatusText}>Updated for March</Text>
+            <Text style={styles.heroStatusText}>{summary.regularityLabel}</Text>
           </View>
         </View>
 
         <View style={styles.heroContent}>
-          <Text style={styles.heroTitle}>Keep your cycle history in one calm, consistent place</Text>
-          <Text style={styles.heroBody}>
-            A few simple date entries help turn scattered notes into a timeline you can actually
-            review and use.
-          </Text>
+          <Text style={styles.heroTitle}>{summary.summaryHeadline}</Text>
+          <Text style={styles.heroBody}>{summary.summaryBody}</Text>
         </View>
 
         <View style={styles.highlightRow}>
@@ -76,40 +94,91 @@ export default function MenstrualCycleTrackerScreen() {
       <FormSection>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionEyebrow}>Cycle timeline</Text>
-          <Text style={styles.sectionTitle}>Add the dates you want included in your summary</Text>
+          <Text style={styles.sectionTitle}>Add the key dates the summary depends on</Text>
           <Text style={styles.sectionBody}>
-            Start with the current cycle, then add the previous cycle start so the app can compare
-            your recent pattern.
+            The most important dates are the first day of this period, the day bleeding ended, and
+            the first day of the previous period.
           </Text>
         </View>
 
         <DatePickerField
           helperText="The first day bleeding started for your current period."
           label="Current period start date"
-          value="2026-03-02"
+          onChange={(value) => updateDraft("currentPeriodStart", value)}
+          value={draft.currentPeriodStart}
+          errorText={showErrors ? summary.validationErrors.currentPeriodStart : undefined}
         />
         <DatePickerField
           helperText="The day your current period fully ended."
           label="Current period end date"
-          value="2026-03-06"
+          minimumDate={draft.currentPeriodStart || undefined}
+          onChange={(value) => updateDraft("currentPeriodEnd", value)}
+          value={draft.currentPeriodEnd}
+          errorText={showErrors ? summary.validationErrors.currentPeriodEnd : undefined}
         />
         <DatePickerField
           helperText="Use the first day of your last period for comparison."
           label="Previous cycle start date"
-          value="2026-02-01"
+          maximumDate={draft.currentPeriodStart || undefined}
+          onChange={(value) => updateDraft("previousPeriodStart", value)}
+          value={draft.previousPeriodStart}
+          errorText={showErrors ? summary.validationErrors.previousPeriodStart : undefined}
         />
       </FormSection>
 
+      <View style={styles.previewCard}>
+        <View style={styles.previewHeader}>
+          <Text style={styles.previewTitle}>Live summary preview</Text>
+          <View
+            style={[
+              styles.previewTone,
+              summary.summaryTone === "good"
+                ? styles.previewToneGood
+                : summary.summaryTone === "watch"
+                  ? styles.previewToneWatch
+                  : styles.previewToneLimited,
+            ]}
+          >
+            <Text style={styles.previewToneText}>{summary.regularityLabel}</Text>
+          </View>
+        </View>
+
+        <View style={styles.previewGrid}>
+          <View style={styles.previewMetric}>
+            <Text style={styles.previewMetricLabel}>Cycle day</Text>
+            <Text style={styles.previewMetricValue}>{summary.currentCycleDay ?? "--"}</Text>
+          </View>
+          <View style={styles.previewMetric}>
+            <Text style={styles.previewMetricLabel}>Average length</Text>
+            <Text style={styles.previewMetricValue}>
+              {summary.averageCycleLength ? `${summary.averageCycleLength}d` : "--"}
+            </Text>
+          </View>
+          <View style={styles.previewMetric}>
+            <Text style={styles.previewMetricLabel}>Variation</Text>
+            <Text style={styles.previewMetricValue}>
+              {summary.cycleVariation !== null ? `${summary.cycleVariation}d` : "--"}
+            </Text>
+          </View>
+          <View style={styles.previewMetric}>
+            <Text style={styles.previewMetricLabel}>Ovulation estimate</Text>
+            <Text style={styles.previewMetricValue}>
+              {summary.estimatedOvulationDay ? `Day ${summary.estimatedOvulationDay}` : "--"}
+            </Text>
+          </View>
+        </View>
+      </View>
+
       <View style={styles.insightCard}>
         <View style={styles.insightHeader}>
-          <Text style={styles.insightTitle}>What this helps you see</Text>
+          <Text style={styles.insightTitle}>How the app interprets your dates</Text>
           <View style={styles.insightPill}>
-            <Text style={styles.insightPillText}>Summary ready</Text>
+            <Text style={styles.insightPillText}>Transparent rules</Text>
           </View>
         </View>
 
         <View style={styles.bulletList}>
-          {reminders.map((item) => (
+          {[...summary.quickFacts.slice(0, 2), ...reminders].map((item) => (
             <View key={item} style={styles.bulletRow}>
               <View style={styles.bulletDot} />
               <Text style={styles.bulletText}>{item}</Text>
@@ -118,10 +187,7 @@ export default function MenstrualCycleTrackerScreen() {
         </View>
       </View>
 
-      <CustomButton
-        label="View cycle summary"
-        onPress={() => router.push("/tracker/cycle-summary")}
-      />
+      <CustomButton label="Save and view cycle summary" onPress={handleContinue} />
     </Screen>
   );
 }
@@ -233,6 +299,67 @@ const styles = StyleSheet.create({
   sectionBody: {
     ...theme.typography.body,
     color: theme.colors.textMuted,
+  },
+  previewCard: {
+    borderRadius: theme.radius.xl,
+    borderWidth: 1,
+    borderColor: "#E7CFDA",
+    backgroundColor: "#FFFDFE",
+    padding: theme.spacing.xl,
+    gap: theme.spacing.lg,
+    ...theme.shadows.card,
+  },
+  previewHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: theme.spacing.sm,
+    flexWrap: "wrap",
+  },
+  previewTitle: {
+    ...theme.typography.title3,
+    color: theme.colors.text,
+  },
+  previewTone: {
+    borderRadius: theme.radius.pill,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: 6,
+  },
+  previewToneGood: {
+    backgroundColor: "#EAF7F1",
+  },
+  previewToneWatch: {
+    backgroundColor: "#FFF2E5",
+  },
+  previewToneLimited: {
+    backgroundColor: "#F4EDF2",
+  },
+  previewToneText: {
+    ...theme.typography.small,
+    color: theme.colors.text,
+  },
+  previewGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: theme.spacing.sm,
+  },
+  previewMetric: {
+    minWidth: "47%",
+    flexGrow: 1,
+    borderRadius: theme.radius.md,
+    borderWidth: 1,
+    borderColor: "#EED8E2",
+    backgroundColor: "#FFF7FA",
+    padding: theme.spacing.md,
+    gap: 2,
+  },
+  previewMetricLabel: {
+    ...theme.typography.small,
+    color: theme.colors.textMuted,
+  },
+  previewMetricValue: {
+    ...theme.typography.title3,
+    color: theme.colors.text,
   },
   insightCard: {
     borderRadius: theme.radius.lg,

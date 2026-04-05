@@ -2,6 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { AppLogo } from "@/components/AppLogo";
 import { Screen } from "@/components/Screen";
 import { theme } from "@/theme";
 
@@ -26,9 +27,7 @@ export const AuthShell = ({
         <View style={styles.heroGlowLarge} />
 
         <View style={styles.brandRow}>
-          <View style={styles.brandBadge}>
-            <Text style={styles.brandBadgeText}>H</Text>
-          </View>
+          <AppLogo size={44} />
           <View style={styles.brandCopy}>
             <Text style={styles.brandLabel}>HormoSync</Text>
           </View>
@@ -79,19 +78,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: theme.spacing.sm,
-  },
-  brandBadge: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: theme.colors.primary,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  brandBadgeText: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: theme.colors.white,
   },
   brandCopy: {
     flex: 1,

@@ -17,8 +17,10 @@ export const EmptyState = ({ title, description }: EmptyStateProps) => (
 const styles = StyleSheet.create({
   container: {
     padding: theme.spacing.xl,
-    borderRadius: theme.radius.lg,
-    backgroundColor: theme.colors.surfaceMuted,
+    borderRadius: theme.radius.xl,
+    backgroundColor: "rgba(255,255,255,0.88)",
+    borderWidth: 1,
+    borderColor: theme.colors.border,
     gap: theme.spacing.sm,
     alignItems: "center",
   },

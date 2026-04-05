@@ -42,6 +42,36 @@ const humanizeKey = (key: string) =>
     .trim()
     .replace(/^./, (char) => char.toUpperCase());
 
+const hiddenDetailKeys = new Set([
+  "prediction",
+  "result",
+  "label",
+  "risk",
+  "pcos_level",
+  "pcos_present",
+  "pcos_probability",
+  "pcos_risk_level",
+  "pcos_probability_of_developing",
+  "probability",
+  "confidence",
+  "score",
+  "recommendations",
+  "message",
+  "detail",
+  "explanation",
+  "explanations",
+  "shap",
+  "shap_values",
+  "shapValue",
+  "shapValues",
+  "feature_importance",
+  "feature_importances",
+  "feature_contributions",
+  "top_factors",
+  "top_features",
+  "reasoning",
+]);
+
 export const normalizePredictionResponse = (
   response: PredictionResponseRaw | string | number | boolean,
   title: string,
@@ -67,7 +97,14 @@ export const normalizePredictionResponse = (
     parseMetric(normalizedResponse.score);
 
   const details = Object.entries(normalizedResponse)
-    .filter(([key, value]) => !["prediction", "result", "label", "risk", "pcos_level", "pcos_present", "pcos_probability", "pcos_risk_level", "pcos_probability_of_developing", "probability", "confidence", "score", "recommendations"].includes(key) && value !== null && value !== undefined)
+    .filter(
+      ([key, value]) =>
+        !hiddenDetailKeys.has(key) &&
+        !key.toLowerCase().includes("shap") &&
+        !key.toLowerCase().includes("explain") &&
+        value !== null &&
+        value !== undefined,
+    )
     .slice(0, 6)
     .map(([key, value]) => ({
       label: humanizeKey(key),
@@ -108,9 +145,7 @@ export const normalizePredictionResponse = (
 export const toAssessmentResult = (prediction: NormalizedPredictionResult): AssessmentResult => ({
   risk: prediction.risk,
   stage: `${prediction.title}: ${prediction.rawLabel}`,
-  summary: prediction.confidenceText
-    ? `${prediction.summary} ${prediction.confidenceText}.`
-    : prediction.summary,
+  summary: prediction.summary,
   recommendations: prediction.recommendations,
 });
 

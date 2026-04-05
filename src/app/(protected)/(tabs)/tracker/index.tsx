@@ -23,6 +23,7 @@ export default function TrackerTabScreen() {
       />
 
       <View style={styles.highlightCard}>
+        <View style={styles.highlightGlow} />
         <View style={styles.highlightTopRow}>
           <View style={styles.highlightBadge}>
             <Ionicons color={theme.colors.primaryDark} name="sparkles-outline" size={14} />
@@ -82,13 +83,23 @@ const styles = StyleSheet.create({
     gap: theme.spacing.lg,
   },
   highlightCard: {
-    borderRadius: theme.radius.xl,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: "#E9D5DF",
-    backgroundColor: "#FFF9FB",
+    backgroundColor: "rgba(255,255,255,0.92)",
     padding: theme.spacing.xl,
     gap: theme.spacing.lg,
     ...theme.shadows.card,
+    overflow: "hidden",
+  },
+  highlightGlow: {
+    position: "absolute",
+    width: 150,
+    height: 150,
+    borderRadius: theme.radius.pill,
+    backgroundColor: "#FAE7F0",
+    right: -36,
+    top: -44,
   },
   highlightTopRow: {
     flexDirection: "row",
@@ -134,7 +145,7 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    borderRadius: theme.radius.md,
+    borderRadius: theme.radius.lg,
     borderWidth: 1,
     borderColor: "#F0DFE7",
     backgroundColor: theme.colors.white,
@@ -153,7 +164,7 @@ const styles = StyleSheet.create({
     gap: theme.spacing.lg,
   },
   tipShell: {
-    borderRadius: theme.radius.xl,
+    borderRadius: 28,
     overflow: "hidden",
   },
 });

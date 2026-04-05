@@ -5,7 +5,13 @@
     "scheme": "hormosync",
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FEFBFC"
+    },
     "plugins": [
       "expo-router"
     ],
@@ -14,6 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#F7F2F1"
       }
     },
@@ -21,7 +28,8 @@
       "supportsTablet": true
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./assets/images/logo.png"
     }
   }
 }

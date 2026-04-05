@@ -62,6 +62,13 @@ export const ServiceCard = ({ service, onPress }: ServiceCardProps) => {
           <Text style={styles.description}>{service.description}</Text>
         </View>
 
+        <View style={[styles.helperBanner, { backgroundColor: tone.bannerBackground, borderColor: tone.bannerBorder }]}>
+          <Ionicons color={tone.iconColor} name="sparkles-outline" size={14} />
+          <Text style={[styles.helperBannerText, { color: tone.bannerText }]}>
+            {getServiceBenefit(service.id)}
+          </Text>
+        </View>
+
         <View style={styles.footer}>
           <View
             style={[
@@ -101,15 +108,15 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.lg,
     shadowColor: "#8A5C6F",
     shadowOpacity: Platform.OS === "ios" ? 0.12 : 0.18,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 10 },
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 12 },
     elevation: 6,
   },
   card: {
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.lg,
+    borderRadius: theme.radius.xl,
+    padding: theme.spacing.xl,
     borderWidth: 1,
-    gap: 14,
+    gap: 16,
     overflow: "hidden",
   },
   glow: {
@@ -157,7 +164,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   body: {
-    gap: 6,
+    gap: 8,
   },
   title: {
     ...theme.typography.title3,
@@ -166,6 +173,19 @@ const styles = StyleSheet.create({
   description: {
     ...theme.typography.body,
     color: theme.colors.textMuted,
+  },
+  helperBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.spacing.sm,
+    borderRadius: theme.radius.md,
+    borderWidth: 1,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+  },
+  helperBannerText: {
+    ...theme.typography.small,
+    flex: 1,
   },
   footer: {
     flexDirection: "row",
@@ -228,6 +248,9 @@ const getCardTone = (serviceId: string) => {
         frequencyText: "#8F6075",
         actionBackground: "#FCEEF4",
         actionBorder: "#E8CCDA",
+        bannerBackground: "#FFF0F6",
+        bannerBorder: "#EDD7E3",
+        bannerText: "#8F6075",
       };
     case "food":
       return {
@@ -243,6 +266,9 @@ const getCardTone = (serviceId: string) => {
         frequencyText: "#896A37",
         actionBackground: "#FBF1E5",
         actionBorder: "#EADFC8",
+        bannerBackground: "#FFF7EF",
+        bannerBorder: "#EADFC8",
+        bannerText: "#896A37",
       };
     case "seed":
       return {
@@ -258,6 +284,9 @@ const getCardTone = (serviceId: string) => {
         frequencyText: "#5C7552",
         actionBackground: "#F1F4E8",
         actionBorder: "#DCE2CB",
+        bannerBackground: "#F5F8EE",
+        bannerBorder: "#DCE2CB",
+        bannerText: "#5C7552",
       };
     default:
       return {
@@ -273,6 +302,9 @@ const getCardTone = (serviceId: string) => {
         frequencyText: theme.colors.textMuted,
         actionBackground: theme.colors.surfaceMuted,
         actionBorder: "#E6CBD8",
+        bannerBackground: "#F9EEF2",
+        bannerBorder: "#E6CBD8",
+        bannerText: theme.colors.textMuted,
       };
   }
 };
@@ -300,5 +332,18 @@ const getServiceCadence = (serviceId: string) => {
       return "Match your phase";
     default:
       return "Daily check-in";
+  }
+};
+
+const getServiceBenefit = (serviceId: string) => {
+  switch (serviceId) {
+    case "cycle":
+      return "Spot patterns faster with a more complete timeline.";
+    case "food":
+      return "Balance meals with quicker, easier calorie guidance.";
+    case "seed":
+      return "Keep your phase-based routine simple and consistent.";
+    default:
+      return "A quick check-in that keeps your progress moving.";
   }
 };

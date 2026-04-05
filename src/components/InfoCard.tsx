@@ -16,10 +16,12 @@ export const InfoCard = ({ title, description }: InfoCardProps) => (
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: theme.colors.surfaceAccent,
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.lg,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    borderRadius: theme.radius.xl,
+    padding: theme.spacing.xl,
     gap: theme.spacing.sm,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
   },
   title: {
     ...theme.typography.title3,

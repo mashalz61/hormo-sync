@@ -27,12 +27,27 @@ export default function AssessmentsTabScreen() {
         title="Clinical Insights"
       />
 
-      <View className="flex-row flex-wrap justify-between gap-y-4">
+      <View className="rounded-[24px] border border-[#ECD6E1] bg-white/80 p-4">
+        <View className="mb-4 flex-row items-center justify-between">
+          <View>
+            <Text className="text-[17px] font-semibold text-healthcare-text">Choose a workflow</Text>
+            <Text className="mt-1 text-[13px] leading-5 text-healthcare-muted">
+              Start with the tool that matches the question you want answered today.
+            </Text>
+          </View>
+          <View className="rounded-full border border-[#EFD7E3] bg-[#FFF6FA] px-3 py-1">
+            <Text className="text-[11px] font-semibold text-healthcare-primary">
+              {assessmentServices.length} tools
+            </Text>
+          </View>
+        </View>
+
+        <View className="flex-row flex-wrap justify-between gap-y-4">
         {assessmentServices.map((service) => (
           <Pressable
             key={service.id}
             accessibilityRole="button"
-            className="w-[48.5%] rounded-[18px] border border-[#EFD7E3] bg-white p-4"
+            className="w-[48.5%] rounded-[22px] border border-[#EFD7E3] bg-white p-4"
             onPress={() => router.push(service.route as never)}
           >
             <LinearGradient
@@ -57,16 +72,19 @@ export default function AssessmentsTabScreen() {
             <Text className="mt-3 text-[15px] font-semibold leading-5 text-healthcare-text" numberOfLines={2}>
               {service.title}
             </Text>
-            <Text className="mt-1 text-[12px] leading-4 text-healthcare-muted" numberOfLines={2}>
+            <Text className="mt-1.5 text-[12px] leading-[18px] text-healthcare-muted" numberOfLines={2}>
               {service.description}
             </Text>
 
-            <View className="mt-3 flex-row items-center justify-between border-t border-[#F0DCE6] pt-2.5">
+            <View className="mt-3 flex-row items-center justify-between border-t border-[#F0DCE6] pt-3">
               <Text className="text-[12px] font-semibold text-healthcare-primary">Open tool</Text>
-              <Ionicons color="#CC5C89" name="chevron-forward" size={15} />
+              <View className="h-8 w-8 items-center justify-center rounded-full bg-[#FAEDF3]">
+                <Ionicons color="#CC5C89" name="chevron-forward" size={15} />
+              </View>
             </View>
           </Pressable>
         ))}
+        </View>
       </View>
     </Screen>
   );

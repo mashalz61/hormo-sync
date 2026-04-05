@@ -9,6 +9,8 @@ import { Screen } from "@/components/Screen";
 import { mockUser, services } from "@/data/mockData";
 import { useGreeting } from "@/hooks/useGreeting";
 import { homeSnapshot, useAppStore } from "@/store/appStore";
+import { selectNetCalories, useCalorieStore } from "@/store/calorieStore";
+import { formatKcalForDisplay, formatKcalWithUnit } from "@/utils/calorieResponse";
 
 const quickStatCards: Array<{
   label: string;
@@ -46,6 +48,9 @@ const riskToneByLevel = {
 export default function HomeScreen() {
   const greeting = useGreeting();
   const reminders = useAppStore((state) => state.reminders);
+  const consumedCalories = useCalorieStore((state) => state.consumedCalories);
+  const burnedCalories = useCalorieStore((state) => state.burnedCalories);
+  const netCalories = useCalorieStore(selectNetCalories);
   const riskTone = riskToneByLevel[homeSnapshot.riskSummary.risk];
   const habitCompletion = Math.round(
     (homeSnapshot.completedHabits / homeSnapshot.totalHabits) * 100,
@@ -62,17 +67,18 @@ export default function HomeScreen() {
         colors={["#F7DDE9", "#FBEAF2", "#FFF6FA"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={{ borderRadius: 28, padding: 2 }}
+        style={{ borderRadius: 32, padding: 2 }}
       >
-        <View className="overflow-hidden rounded-[26px] border border-[#EFD3DF] bg-[#FFF8FB] px-5 pb-6 pt-4">
+        <View className="overflow-hidden rounded-[30px] border border-[#EFD3DF] bg-[#FFF8FB] px-5 pb-6 pt-4">
           <View className="absolute -right-12 -top-10 h-44 w-44 rounded-full bg-[#F6D5E3]/85" />
           <View className="absolute -bottom-16 -left-8 h-40 w-40 rounded-full bg-[#F9E0EB]/80" />
+          <View className="absolute right-10 top-16 h-16 w-16 rounded-full border border-white/40 bg-white/20" />
 
           <View className="mb-3 flex-row items-center justify-between">
-            <View className="rounded-full border border-[#EED8E3] bg-white px-3 py-1">
+            <View className="rounded-full border border-[#EED8E3] bg-white/95 px-3 py-1">
               <Text className="text-[11px] font-semibold text-healthcare-muted">{todayLabel}</Text>
             </View>
-            <View className="rounded-full border border-[#EED8E3] bg-white px-3 py-1">
+            <View className="rounded-full border border-[#EED8E3] bg-white/95 px-3 py-1">
               <Text className="text-[11px] font-semibold text-healthcare-primary">
                 {mockUser.cyclePhase} phase
               </Text>
@@ -81,7 +87,7 @@ export default function HomeScreen() {
 
           <View className="flex-row items-start justify-between gap-3">
             <View className="flex-1">
-              <View className="self-start rounded-full bg-white/85 px-3 py-1">
+              <View className="self-start rounded-full border border-white/70 bg-white/85 px-3 py-1">
                 <Text className="text-[11px] font-semibold uppercase tracking-[0.6px] text-healthcare-muted">
                   {greeting}
                 </Text>
@@ -94,7 +100,7 @@ export default function HomeScreen() {
               </Text>
             </View>
 
-            <View className="rounded-2xl border border-[#F0D7E3] bg-white px-3 py-2.5">
+            <View className="rounded-[20px] border border-[#F0D7E3] bg-white px-3 py-2.5">
               <View className="flex-row items-center gap-1.5">
                 <Ionicons color="#CC5C89" name="sparkles-outline" size={14} />
                 <Text className="text-[11px] font-semibold text-healthcare-primary">Daily Focus</Text>
@@ -111,7 +117,7 @@ export default function HomeScreen() {
             ))}
           </View>
 
-          <View className="mt-5 rounded-2xl border border-[#EED4E1] bg-white px-3.5 py-3.5">
+          <View className="mt-5 rounded-[24px] border border-[#EED4E1] bg-white px-4 py-4">
             <View className="flex-row items-center justify-between">
               <Text className="text-[13px] font-medium text-healthcare-muted">Today&apos;s rhythm</Text>
               <Text className="text-[12px] font-semibold text-healthcare-primary">
@@ -132,7 +138,8 @@ export default function HomeScreen() {
         </View>
       </LinearGradient>
 
-      <View className="rounded-[20px] border border-[#ECD1DE] bg-white p-5">
+      <View className="overflow-hidden rounded-[24px] border border-[#ECD1DE] bg-white p-5">
+        <View className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-[#FAEDF3]" />
         <View className="flex-row items-center justify-between">
           <Text className="text-[16px] font-semibold text-healthcare-text">Continue Progress</Text>
           <View className="rounded-full px-3 py-1" style={{ backgroundColor: riskTone.bgColor }}>
@@ -145,7 +152,26 @@ export default function HomeScreen() {
           {homeSnapshot.riskSummary.stage}
         </Text>
 
-        <View className="mt-4 gap-2">
+        <View className="mt-4 rounded-[20px] border border-[#EED5E1] bg-[#FFFAFC] px-3.5 py-3">
+          <Text className="text-[11px] font-semibold uppercase tracking-[0.5px] text-healthcare-muted">
+            Today&apos;s calories
+          </Text>
+          <View className="mt-2 flex-row justify-between gap-2">
+            <HomeCalorieStat label="Consumed" value={formatKcalWithUnit(consumedCalories)} />
+            <HomeCalorieStat label="Burned" value={formatKcalWithUnit(burnedCalories)} />
+            <View className="min-w-0 flex-1">
+              <Text className="text-[10px] font-medium uppercase tracking-[0.4px] text-healthcare-muted">
+                Net
+              </Text>
+              <Text className="mt-0.5 text-[14px] font-semibold text-healthcare-text" numberOfLines={1}>
+                {formatKcalForDisplay(netCalories)}
+              </Text>
+              <Text className="text-[10px] text-healthcare-muted">net kcal</Text>
+            </View>
+          </View>
+        </View>
+
+        <View className="mt-4 gap-2.5">
           <ActionChip
             icon="pulse-outline"
             label="Resume Assessment"
@@ -154,9 +180,9 @@ export default function HomeScreen() {
           />
           <ActionChip
             icon="restaurant-outline"
-            label="Log Meal"
-            description="Capture your nutrition pattern"
-            onPress={() => router.push("/tracker/enter-your-meal")}
+            label="Smart Food Analyzer"
+            description="Track meals, workouts, and calorie balance"
+            onPress={() => router.push("/tracker/smart-food-dashboard")}
           />
           <ActionChip
             icon="leaf-outline"
@@ -167,7 +193,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View className="rounded-[20px] border border-[#ECD1DE] bg-white p-4">
+      <View className="rounded-[24px] border border-[#ECD1DE] bg-white p-4">
         <View className="flex-row items-center justify-between">
           <Text className="text-[16px] font-semibold text-healthcare-text">Today&apos;s Reminders</Text>
           <Pressable
@@ -183,11 +209,11 @@ export default function HomeScreen() {
           {reminders.slice(0, 3).map((item) => (
             <View
               key={item.id}
-              className="overflow-hidden rounded-2xl border border-[#EED5E1] bg-[#FFFAFC]"
+              className="overflow-hidden rounded-[20px] border border-[#EED5E1] bg-[#FFFAFC]"
             >
               <View className="flex-row items-center justify-between px-4 py-3.5">
                 <View className="min-w-0 flex-1 flex-row items-center gap-3">
-                  <View className="h-11 w-11 items-center justify-center rounded-xl bg-white">
+                  <View className="h-11 w-11 items-center justify-center rounded-[14px] bg-white">
                     <Ionicons color="#CC5C89" name={getReminderIcon(item.activity)} size={17} />
                   </View>
                   <View className="min-w-0 flex-1 pr-2">
@@ -211,7 +237,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View className="rounded-[20px] border border-[#ECD1DE] bg-white p-4">
+      <View className="rounded-[24px] border border-[#ECD1DE] bg-white p-4">
         <View className="mb-3">
           <Text className="text-[18px] font-semibold text-healthcare-text">Health Services</Text>
           <Text className="mt-1 text-[14px] leading-5 text-healthcare-muted">
@@ -254,13 +280,24 @@ interface QuickStatProps {
   icon: keyof typeof Ionicons.glyphMap;
 }
 
+function HomeCalorieStat({ label, value }: Readonly<{ label: string; value: string }>) {
+  return (
+    <View className="min-w-0 flex-1">
+      <Text className="text-[10px] font-medium uppercase tracking-[0.4px] text-healthcare-muted">{label}</Text>
+      <Text className="mt-0.5 text-[14px] font-semibold text-healthcare-text" numberOfLines={1}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
 const QuickStat = ({ label, value, icon }: QuickStatProps) => (
-  <View className="min-w-[46%] flex-1 rounded-[16px] border border-[#EED5E1] bg-white p-3.5">
+  <View className="min-w-[46%] flex-1 rounded-[18px] border border-[#EED5E1] bg-white/95 p-3.5">
     <View className="flex-row items-center justify-between">
       <Text className="text-[11px] font-medium uppercase tracking-[1px] text-healthcare-muted">{label}</Text>
       <Ionicons color="#8F6075" name={icon} size={14} />
     </View>
-    <Text className="mt-1.5 text-[16px] font-semibold text-healthcare-text">{value}</Text>
+    <Text className="mt-2 text-[17px] font-semibold text-healthcare-text">{value}</Text>
   </View>
 );
 
@@ -274,16 +311,18 @@ interface ActionChipProps {
 const ActionChip = ({ label, description, icon, onPress }: ActionChipProps) => (
   <Pressable
     accessibilityRole="button"
-    className="flex-row items-center gap-3 rounded-2xl border border-[#EED5E1] bg-[#FFFAFC] px-3 py-3"
+    className="flex-row items-center gap-3 rounded-[20px] border border-[#EED5E1] bg-[#FFFAFC] px-3.5 py-3.5"
     onPress={onPress}
   >
-    <View className="h-9 w-9 items-center justify-center rounded-xl bg-white">
+    <View className="h-10 w-10 items-center justify-center rounded-[14px] bg-white">
       <Ionicons color="#CC5C89" name={icon} size={16} />
     </View>
     <View className="flex-1">
       <Text className="text-[13px] font-semibold text-healthcare-text">{label}</Text>
-      <Text className="text-[11px] text-healthcare-muted">{description}</Text>
+      <Text className="mt-0.5 text-[11px] leading-4 text-healthcare-muted">{description}</Text>
     </View>
-    <Ionicons color="#9A7285" name="chevron-forward" size={16} />
+    <View className="h-8 w-8 items-center justify-center rounded-full bg-[#FAEDF3]">
+      <Ionicons color="#9A7285" name="chevron-forward" size={16} />
+    </View>
   </Pressable>
 );

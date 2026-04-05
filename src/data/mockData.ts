@@ -73,7 +73,7 @@ export const services: Service[] = [
     icon: "nutrition-outline",
     accent: "#E9F2E8",
     gradientColors: ["#C25E88", "#E0A0BB"],
-    route: "/tracker/meal-time-selection",
+    route: "/tracker/smart-food-dashboard",
   },
   {
     id: "reminder",
@@ -110,14 +110,21 @@ export const cycleLogs: CycleLog[] = [
     id: "cycle-1",
     startDate: "2026-03-02",
     endDate: "2026-03-06",
-    cycleLength: 31,
-    regularity: "Irregular",
+    cycleLength: 29,
+    regularity: "Regular",
   },
   {
     id: "cycle-2",
     startDate: "2026-02-01",
     endDate: "2026-02-05",
-    cycleLength: 30,
+    cycleLength: 27,
+    regularity: "Regular",
+  },
+  {
+    id: "cycle-3",
+    startDate: "2026-01-05",
+    endDate: "2026-01-09",
+    cycleLength: 31,
     regularity: "Regular",
   },
 ];
@@ -169,25 +176,25 @@ export const seedRecommendations: SeedRecommendation[] = [
   {
     phase: "Menstrual",
     seeds: ["Flaxseeds", "Pumpkin seeds"],
-    amount: "1 tablespoon each daily",
+    amount: "Common routine: 1 tablespoon each daily",
     ideas: ["Blend into smoothies", "Stir into oatmeal", "Sprinkle over yogurt"],
   },
   {
     phase: "Follicular",
     seeds: ["Flaxseeds", "Pumpkin seeds"],
-    amount: "1 tablespoon each daily",
+    amount: "Common routine: 1 tablespoon each daily",
     ideas: ["Add to salad toppings", "Mix into overnight oats", "Blend with berries"],
   },
   {
     phase: "Ovulation",
     seeds: ["Sunflower seeds", "Sesame seeds"],
-    amount: "1 tablespoon each daily",
+    amount: "Common routine: 1 tablespoon each daily",
     ideas: ["Top avocado toast", "Mix into seed mix", "Add to grain bowls"],
   },
   {
     phase: "Luteal",
     seeds: ["Sunflower seeds", "Sesame seeds"],
-    amount: "1 tablespoon each daily",
+    amount: "Common routine: 1 tablespoon each daily",
     ideas: ["Stir into yogurt", "Blend into tahini dressing", "Sprinkle onto salads"],
   },
 ];

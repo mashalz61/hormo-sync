@@ -19,6 +19,9 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
     paddingBottom: spacing.xxxl,
   },
+  sectionGap: {
+    gap: spacing.xl,
+  },
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,
@@ -31,5 +34,13 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: colors.surfaceMuted,
     borderRadius: radius.lg,
     padding: spacing.lg,
+  },
+  cardElevated: {
+    backgroundColor: colors.surfaceElevated,
+    borderRadius: radius.xl,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.xl,
+    ...shadows.float,
   },
 });

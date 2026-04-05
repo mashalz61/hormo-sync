@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { AppLogo } from "@/components/AppLogo";
 import { theme } from "@/theme";
 
 interface AppHeaderProps {
@@ -16,7 +17,11 @@ export const AppHeader = ({ title, subtitle, rightIcon, onRightPress }: AppHeade
 
   return (
     <View style={[styles.container, { paddingTop: Math.max(insets.top, theme.spacing.md) }]}>
-      <View style={{ flex: 1 }}>
+      <View style={styles.titleWrap}>
+        <View style={styles.kicker}>
+          <AppLogo circular size={22} style={styles.kickerLogo} />
+          <Text style={styles.kickerText}>Hormo Sync</Text>
+        </View>
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
       </View>
@@ -32,8 +37,33 @@ export const AppHeader = ({ title, subtitle, rightIcon, onRightPress }: AppHeade
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: theme.spacing.md,
+  },
+  titleWrap: {
+    flex: 1,
+  },
+  kicker: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+    gap: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: theme.radius.pill,
+    backgroundColor: "rgba(255, 255, 255, 0.88)",
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    marginBottom: theme.spacing.sm,
+  },
+  kickerLogo: {
+    marginVertical: -2,
+  },
+  kickerText: {
+    ...theme.typography.small,
+    color: theme.colors.primaryDark,
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
   },
   title: {
     ...theme.typography.title1,
@@ -42,16 +72,18 @@ const styles = StyleSheet.create({
   subtitle: {
     ...theme.typography.body,
     color: theme.colors.textMuted,
-    marginTop: theme.spacing.xs,
+    marginTop: theme.spacing.sm,
+    maxWidth: "92%",
   },
   iconButton: {
     width: 44,
     height: 44,
     borderRadius: theme.radius.pill,
-    backgroundColor: theme.colors.surface,
+    backgroundColor: "rgba(255, 255, 255, 0.92)",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
     borderColor: theme.colors.border,
+    ...theme.shadows.card,
   },
 });

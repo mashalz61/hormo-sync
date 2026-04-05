@@ -55,7 +55,12 @@ export default function RemindersTabScreen() {
       ) : null}
 
       <View style={styles.snapshotCard}>
-        <Text style={styles.snapshotTitle}>Today at a glance</Text>
+        <View style={styles.snapshotHeader}>
+          <Text style={styles.snapshotTitle}>Today at a glance</Text>
+          <View style={styles.snapshotPill}>
+            <Text style={styles.snapshotPillText}>Gentle routine</Text>
+          </View>
+        </View>
         <View style={styles.metricsRow}>
           <View style={styles.metricCard}>
             <Text style={styles.metricLabel}>Active</Text>
@@ -109,12 +114,31 @@ const styles = StyleSheet.create({
     paddingBottom: theme.spacing.xxxl,
   },
   snapshotCard: {
-    borderRadius: theme.radius.lg,
+    borderRadius: theme.radius.xl,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    backgroundColor: theme.colors.surface,
-    padding: theme.spacing.lg,
+    backgroundColor: "rgba(255,255,255,0.92)",
+    padding: theme.spacing.xl,
     gap: theme.spacing.md,
+    ...theme.shadows.card,
+  },
+  snapshotHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: theme.spacing.sm,
+  },
+  snapshotPill: {
+    borderRadius: theme.radius.pill,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: 6,
+    backgroundColor: "#FAEDF3",
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  snapshotPillText: {
+    ...theme.typography.small,
+    color: theme.colors.primaryDark,
   },
   feedbackBar: {
     flexDirection: "row",
@@ -142,8 +166,8 @@ const styles = StyleSheet.create({
   },
   metricCard: {
     flex: 1,
-    borderRadius: theme.radius.md,
-    backgroundColor: theme.colors.surfaceMuted,
+    borderRadius: theme.radius.lg,
+    backgroundColor: "#FFF9FC",
     borderWidth: 1,
     borderColor: theme.colors.border,
     paddingVertical: theme.spacing.md,

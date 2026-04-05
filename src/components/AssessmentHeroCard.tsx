@@ -21,6 +21,7 @@ export const AssessmentHeroCard = ({
 }: AssessmentHeroCardProps) => (
   <LinearGradient colors={gradientColors} end={{ x: 1, y: 1 }} start={{ x: 0, y: 0 }} style={styles.gradient}>
     <View style={styles.card}>
+      <View style={styles.glowTop} />
       <View style={styles.row}>
         <View style={styles.copyWrap}>
           <Text style={styles.eyebrow}>{eyebrow}</Text>
@@ -44,14 +45,24 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surface,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    borderRadius: theme.radius.lg,
-    padding: theme.spacing.lg,
+    borderRadius: theme.radius.xl,
+    padding: theme.spacing.xl,
+    overflow: "hidden",
+  },
+  glowTop: {
+    position: "absolute",
+    right: -24,
+    top: -30,
+    width: 120,
+    height: 120,
+    borderRadius: theme.radius.pill,
+    backgroundColor: "rgba(247, 228, 237, 0.7)",
   },
   row: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-between",
-    gap: theme.spacing.md,
+    gap: theme.spacing.lg,
   },
   copyWrap: {
     flex: 1,
@@ -70,15 +81,17 @@ const styles = StyleSheet.create({
   description: {
     ...theme.typography.caption,
     color: theme.colors.textMuted,
-    marginTop: theme.spacing.xs,
+    marginTop: theme.spacing.sm,
+    lineHeight: 20,
   },
   iconWrap: {
-    height: 44,
-    width: 44,
-    borderRadius: 16,
+    height: 50,
+    width: 50,
+    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F9EDF2",
+    borderWidth: 1,
+    borderColor: "#EFD5E1",
   },
 });
-

@@ -60,6 +60,13 @@ export async function requestJson<T>(path: string, options: RequestJsonOptions =
 
     const responseBody = await parseResponseBody(response);
 
+    console.log("[API response]", {
+      url: requestUrl,
+      status: response.status,
+      ok: response.ok,
+      body: responseBody,
+    });
+
     if (!response.ok) {
       throw buildHttpError(response.status, responseBody);
     }

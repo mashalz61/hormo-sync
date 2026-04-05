@@ -3,64 +3,73 @@ import { Tabs } from "expo-router";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { AppLogo } from "@/components/AppLogo";
 import { theme } from "@/theme";
 
-const tabIcon =
-  (
-    activeName: keyof typeof Ionicons.glyphMap,
-    inactiveName: keyof typeof Ionicons.glyphMap,
-  ) =>
-  ({ color, size, focused }: { color: string; size: number; focused: boolean }) =>
-    (
-      <View
-        style={{
-          width: 34,
-          height: 34,
-          borderRadius: 12,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: focused ? "#FCEFF4" : "transparent",
-        }}
-      >
-        <Ionicons color={color} name={focused ? activeName : inactiveName} size={size} />
-      </View>
-    );
+function createTabIcon(
+  activeName: keyof typeof Ionicons.glyphMap,
+  inactiveName: keyof typeof Ionicons.glyphMap,
+) {
+  const TabBarIcon = ({
+    color,
+    size,
+    focused,
+  }: {
+    color: string;
+    size: number;
+    focused: boolean;
+  }) => (
+    <View
+      style={{
+        width: 34,
+        height: 34,
+        borderRadius: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: focused ? "#FCEFF4" : "transparent",
+      }}
+    >
+      <Ionicons color={color} name={focused ? activeName : inactiveName} size={size} />
+    </View>
+  );
+  TabBarIcon.displayName = `TabBarIcon(${String(activeName)})`;
+  return TabBarIcon;
+}
 
-const homeLogoIcon = ({ focused }: { focused: boolean }) => (
-  <View
-    style={{
-      width: 34,
-      height: 34,
-      borderRadius: 12,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: focused ? theme.colors.primary : "#F9EDF2",
-    }}
-  >
-    <Ionicons
-      color={focused ? theme.colors.white : theme.colors.primary}
-      name={focused ? "home" : "home-outline"}
-      size={20}
-    />
-  </View>
-);
+function HomeTabBarIcon({ focused }: { focused: boolean }) {
+  return (
+    <View
+      style={{
+        width: 34,
+        height: 34,
+        borderRadius: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: focused ? "#FCEFF4" : "transparent",
+      }}
+    >
+      <AppLogo size={focused ? 30 : 26} />
+    </View>
+  );
+}
 
-const tabLabel =
-  (title: string) =>
-  ({ focused, color }: { focused: boolean; color: string }) =>
-    (
-      <Text
-        style={{
-          ...theme.typography.small,
-          fontSize: 11,
-          marginTop: 2,
-          color,
-          fontWeight: focused ? "700" : "600",
-        }}
-      >
-        {title}
-      </Text>
-    );
+function createTabLabel(title: string) {
+  const TabBarLabel = ({ focused, color }: { focused: boolean; color: string }) => (
+    <Text
+      style={{
+        ...theme.typography.small,
+        fontSize: 11,
+        marginTop: 2,
+        color,
+        fontWeight: focused ? "700" : "600",
+      }}
+    >
+      {title}
+    </Text>
+  );
+  TabBarLabel.displayName = `TabBarLabel(${title})`;
+  return TabBarLabel;
+}
 
 const tabOptions = (
   title: string,
@@ -68,8 +77,8 @@ const tabOptions = (
   inactiveName: keyof typeof Ionicons.glyphMap,
 ) => ({
   title,
-  tabBarIcon: tabIcon(activeName, inactiveName),
-  tabBarLabel: tabLabel(title),
+  tabBarIcon: createTabIcon(activeName, inactiveName),
+  tabBarLabel: createTabLabel(title),
 });
 
 export default function TabsLayout() {
@@ -87,19 +96,19 @@ export default function TabsLayout() {
           left: 16,
           right: 16,
           bottom: Math.max(insets.bottom, 8),
-          height: 70,
-          borderRadius: 22,
-          backgroundColor: "rgba(255,255,255,0.96)",
+          height: 74,
+          borderRadius: 24,
+          backgroundColor: "rgba(255,255,255,0.98)",
           borderTopColor: "transparent",
           borderWidth: 1,
           borderColor: "rgba(232,205,219,0.95)",
-          paddingTop: 6,
-          paddingBottom: 8,
+          paddingTop: 8,
+          paddingBottom: 10,
           shadowColor: "#5A3A48",
-          shadowOpacity: 0.1,
-          shadowRadius: 12,
-          shadowOffset: { width: 0, height: 6 },
-          elevation: 5,
+          shadowOpacity: 0.12,
+          shadowRadius: 18,
+          shadowOffset: { width: 0, height: 10 },
+          elevation: 8,
         },
         tabBarItemStyle: {
           borderRadius: 14,
@@ -119,8 +128,8 @@ export default function TabsLayout() {
         name="home/index"
         options={{
           title: "Home",
-          tabBarIcon: homeLogoIcon,
-          tabBarLabel: tabLabel("Home"),
+          tabBarIcon: HomeTabBarIcon,
+          tabBarLabel: createTabLabel("Home"),
         }}
       />
       <Tabs.Screen

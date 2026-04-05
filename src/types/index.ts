@@ -45,6 +45,12 @@ export interface CycleLog {
   regularity: "Regular" | "Irregular";
 }
 
+export interface CycleTrackerDraft {
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  previousPeriodStart: string;
+}
+
 export interface MealEntry {
   id: string;
   mealType: "Breakfast" | "Lunch" | "Dinner" | "Snacks";
